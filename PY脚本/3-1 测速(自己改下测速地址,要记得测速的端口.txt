@@ -1,0 +1,17 @@
+CloudflareST.exe -tp 443 -f ip.txt -n 200 -dn 10 -sl 5 -tl 400 -url https://cs.notls.zjccc.onflashdrive.app/200m
+
+CloudflareST.exe -tp 2096 -f ip.txt -n 200 -dn 10 -sl 5 -tl 400 -url https://cs.notls.zjccc.onflashdrive.app/200m
+
+CloudflareST.exe -tp 2053 -f HK.txt -n 200 -dn 10 -sl 10  -tl 400 -url https://cs.notls.zjccc.onflashdrive.app/200m
+CloudflareST.exe -tp 2052 -f HK.txt -n 200 -dn 10 -sl 10 -tl 400 -url http://cs.notls.zjccc.onflashdrive.app/200m
+
+CloudflareST.exe -tp 2053 -f SG.txt -n 200 -dn 10 -sl 10 -tl 400 -url https://cs.notls.zjccc.onflashdrive.app/200m
+
+
+CloudflareST.exe -tp 2052 -f JP.txt -n 200 -dn 10 -sl 10 -tl 400 -url http://cs.notls.zjccc.onflashdrive.app/200m
+
+CloudflareST.exe -tp 2052 -f KR.txt -n 200 -dn 10 -sl 10 -tl 400 -url http://cs.notls.zjccc.onflashdrive.app/200m
+
+https://zip.baipiao.eu.org
+
+http://cs.notls.zjccc.onflashdrive.app/200m
