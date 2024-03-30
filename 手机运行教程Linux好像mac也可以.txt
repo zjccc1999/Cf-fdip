@@ -1,0 +1,20 @@
+手机运行
+1. ROOT
+2.下载Termux
+3.下载MT管理器
+3.下载pydroid3 l链接：https://blog.qaiu.top/archives/pydroid3v70
+
+4.把手机py文件夹的复制到/storage/emulated/0/Android/data/ru.iiec.pydroid3/files/
+
+5.把手机shell文件夹的复制到/data/data/com.termux/files/home/
+几个文件权限给满777
+
+6.Termux输入bash zjccc.sh可以获取到反代IP，会输出几个文件在/data/data/com.termux/files/home/
+
+7.打开pydroid 3 打开 识别国家地区且整合.py 运行。【能力不足，实在是不会转.sh文件】输出的文件在/storage/emulated/0/Android/data/ru.iiec.pydroid3/files/
+
+8.将想要测速的文件复制到Termux输入bash cesu.sh 会输出一个表格
+
+9.Termux输入bash gs.sh 可以转换格式
+
+！！就第7步需要用到pydroid 3 烦死 ！！
