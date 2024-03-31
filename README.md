@@ -1,5 +1,11 @@
 # 安卓和linux使用教程
 
+经过不懈努力，终于guojia.sh也可以使用本地查询国家地区了，虽然还是没有py快。
+guojia.sh在手机文件夹中，zjccc.sh暂时还是api处理，可以自己修改。
+方法:把GeoLite2-Country复制到termux根目录，然后输入
+pkg install libmaxminddb-tools。
+
+
 要查看Linux系统的架构，你可以使用以下命令之一：
 
 使用 uname 命令：
