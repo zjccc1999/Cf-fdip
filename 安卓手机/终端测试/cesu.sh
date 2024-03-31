@@ -62,7 +62,9 @@ done
 
 # 查找并合并同一目录及子目录下的 $text_file
 merged_file="${text_file}"
-find . -type f -name "$text_file" -exec cat {} + > "$merged_file"
+if [ "$text_file" != "GFYMIP.txt" ]; then
+    find . -type f -name "$text_file" -exec cat {} + > "$merged_file"
+fi
 
 # 去除重复 IP
 awk '!seen[$0]++' "$merged_file" > "$merged_file.unique"
@@ -82,4 +84,3 @@ else
 fi
 
 echo "测试完成！"
-
