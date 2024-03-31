@@ -10,6 +10,14 @@ uname -m
 
 [github]: https://github.com/XIU2/CloudflareSpeedTest
 
+
+Termux一键下载运行指令:
+curl -sSL -o ~/zjccc.sh https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
+
+标准Linux一键下载运行指令:
+wget https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
+
+
 在Termux上安装jq，你可以使用以下命令：
 pkg install jq
 这将使用Termux的包管理器pkg来安装jq。安装完成后，你就可以在Termux中使用jq来处理JSON数据了。
@@ -28,10 +36,6 @@ pkg install jq
 
 
 将2-1py脚本和GeoLite2-Country.mmdb放在/storage/emulated/0/Android/data/ru.iiec.pydroid3/files/目录下
-
-
-
-<img src="C:\Users\Administrator\Downloads/Screenshot_2024-04-01-01-12-30-254_bin.mt.plus.jpg" alt="Screenshot_2024-04-01-01-12-30-254_bin.mt.plus" style="zoom:25%;" />
 
 在Windows系统下，可以通过安装**Git Bash**执行.sh，就是测速那里需要改一下。CloudflareSpeedTest 要替换
 
