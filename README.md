@@ -29,7 +29,13 @@ pkg install jq
 
 将2-1py脚本和GeoLite2-Country.mmdb放在/storage/emulated/0/Android/data/ru.iiec.pydroid3/files/目录下
 
+
+
 <img src="C:\Users\Administrator\Downloads/Screenshot_2024-04-01-01-12-30-254_bin.mt.plus.jpg" alt="Screenshot_2024-04-01-01-12-30-254_bin.mt.plus" style="zoom:25%;" />
+
+在Windows系统下，可以通过安装**Git Bash**执行.sh，就是测速那里需要改一下。CloudflareSpeedTest 要替换
+
+
 
 # 电脑版教程
 
