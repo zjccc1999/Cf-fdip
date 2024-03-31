@@ -40,6 +40,8 @@ https://blog.qaiu.top/archives/pydroid3v70
 
 
 # 电脑版教程
+安装Python
+要安装什么库我忘记了，运行失败自己去下载库
 
 推荐使用IDLE
 
