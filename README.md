@@ -5,8 +5,7 @@
 使用 uname 命令：
 uname -m
 这将显示机器的硬件架构信息，例如 x86_64 表示 64 位架构，i386 表示 32 位架构。
-
-然后去下载对应的版本。（我这里的是arm64）
+然后github去下载对应的版本的测速文件。（我这里的是arm64）
 
 [github]: https://github.com/XIU2/CloudflareSpeedTest
 
