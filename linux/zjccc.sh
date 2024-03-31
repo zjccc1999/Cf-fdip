@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+
 
 # 欢迎语
 echo "一起白嫖吧！"
