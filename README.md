@@ -30,3 +30,20 @@ pkg install jq
 将2-1py脚本和GeoLite2-Country.mmdb放在/storage/emulated/0/Android/data/ru.iiec.pydroid3/files/目录下
 
 <img src="C:\Users\Administrator\Downloads/Screenshot_2024-04-01-01-12-30-254_bin.mt.plus.jpg" alt="Screenshot_2024-04-01-01-12-30-254_bin.mt.plus" style="zoom:25%;" />
+
+# 电脑版教程
+
+推荐使用IDLE
+
+右键没有的话使用文件夹中的reg更改注册表
+
+自己右键编辑去替换目录   这是我的目录D:\\PY\\pythonw.exe
+
+4个1开头的是4种获取IP的方法，推荐1-1
+
+剩下的名字都有说明不多解释了。
+
+# https://github.com/P3TERX/GeoLite.mmdb
+
+有时间替换下这个，这个是识别地区用的
+
