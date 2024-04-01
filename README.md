@@ -1,29 +1,40 @@
 # 安卓和linux使用教程
 经过不懈努力，终于guojia.sh也可以使用本地查询国家地区了，虽然还是没有py快。
-guojia.sh在手机文件夹中，zjccc.sh暂时还是api处理，可以自己修改。
+
+guojia.sh在手机文件夹中，zjccc.sh暂时还是api处理，可以自己修改
+。
 方法:把GeoLite2-Country复制到termux根目录/data/data/com.termux/files/home/ ，然后输入
+
 pkg install libmaxminddb-tools。
+
 要查看Linux系统的架构，你可以使用以下命令之一：
+
 用 uname 命令：
 uname -m
 这将显示机器的硬件架构信息，例如 x86_64 表示 64 位架构，i386 表示 32 位架构。
 然后github去下载对应的版本的测速文件。（我这里的是arm64）
 https://github.com/XIU2/CloudflareSpeedTest
+
 Termux一键下载运行指令:
+
 curl -sSL -o ~/zjccc.sh https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
 
 标准Linux一键下载运行指令:
+
 wget https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
 
 在Termux上安装jq，你可以使用以下命令：
+
 pkg install jq
 这将使用Termux的包管理器pkg来安装jq。安装完成后，你就可以在Termux中使用jq来处理JSON数据了。
 
 脚本和测速文件都给满777
 这个是Termux的根目录，下载后的东西放这里面
+
 /data/data/com.termux/files/home/
 #识别国家地区还是推荐用Python，秒出。用api有点慢。
 安卓版叫做Pydroid3:
+
 https://blog.qaiu.top/archives/pydroid3v70
 
 将2-1py脚本和GeoLite2-Country.mmdb放在/storage/emulated/0/Android/data/ru.iiec.pydroid3/files/目录下
