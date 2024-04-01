@@ -130,7 +130,7 @@ bestproxy.wcccc.fun
 www.xfltd.top
 1.achen.link
 cf.flyff.eu.org
-ak.yydsb.link
+ak.永遠的神b.link
 '
 
 # 将字符串按换行符分割成数组
@@ -577,9 +577,9 @@ echo "文件已复制到脚本目录：$merged_file"
 # 执行测试命令
 echo "开始执行测试..."
 if [ $choice -eq 1 ]; then
-    ./CloudflareST -tp $port -f $text_file -n 200 -dn 10 -sl 10 -tl 400 -url http://cs.notls.zjccc.onflashdrive.app/200m
+    ./CloudflareST -tp $port -f $text_file -n 200 -dn 10 -sl 10 -tl 400 -url http://cs.notls.zjccc.onflashdrive.app/200m -dd
 else
-    ./CloudflareST -tp $port -f $text_file -n 200 -dn 10 -sl 10 -tl 400 -url https://cs.notls.zjccc.onflashdrive.app/200m
+    ./CloudflareST -tp $port -f $text_file -n 200 -dn 10 -sl 10 -tl 400 -url https://cs.notls.zjccc.onflashdrive.app/200m -dd
 fi
 
 echo "测试完成！"
