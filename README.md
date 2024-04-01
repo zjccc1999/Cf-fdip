@@ -70,11 +70,13 @@
 
 # 图片
 
-[文件目录](https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL2kvcyFBbHNhNkM0WlpGSjFuQTVSaE4yeTM4NS02VTYy.jpg)
+[文件目录](https://github.com/zjccc1999/Cf-fdip/blob/main/%E5%9B%BE%E7%89%87/%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95.jpg)
 
-[Termux](https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL2kvcyFBbHNhNkM0WlpGSjFuQThKNk0yRVJWSkxlNTAx.jpg)
+[Termux](https://github.com/zjccc1999/Cf-fdip/blob/main/%E5%9B%BE%E7%89%87/Termux.jpg)
 
-[Pydroid 3](https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL2kvcyFBbHNhNkM0WlpGSjFuQkFLT0RiLXFYaXZJTThh.jpg)
+[Pydroid 3](https://github.com/zjccc1999/Cf-fdip/blob/main/%E5%9B%BE%E7%89%87/Python.jpg)
+
+
 
 
 
