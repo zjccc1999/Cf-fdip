@@ -15,10 +15,17 @@ Termux一键下载运行指令:
 
 curl -sSL -o ~/zjccc1.sh https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc1.sh && chmod +x ~/zjccc1.sh && bash ~/zjccc1.sh
 
+代理加速Termux一键下载运行指令:
+
+curl -sSL -o ~/zjccc1.sh https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc1.sh && chmod +x ~/zjccc1.sh && bash ~/zjccc1.sh
+
 标准Linux一键下载运行指令:
 
 wget https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc1.sh -O ~/zjccc1.sh && chmod +x ~/zjccc1.sh && bash ~/zjccc1.sh
 
+代理加速标准Linux一键下载运行指令:
+
+wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc1.sh -O ~/zjccc1.sh && chmod +x ~/zjccc1.sh && bash ~/zjccc1.sh
 要查看Linux系统的架构，你可以使用以下命令之一：
 
 用 uname 命令：
