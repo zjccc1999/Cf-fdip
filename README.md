@@ -1,16 +1,16 @@
 # 安卓和linux使用教程
-1. 下载GeoLite2-Country和CloudflareSpeedTest和sh脚本。 
+1. 下载[GeoLite2-Country](https://github.com/P3TERX/GeoLite.mmdb)
+2. 下载[CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest)
+3. 运行脚本。
 
-2. 运行脚本。
+**要安装什么库我忘记了**
 
-   **要安装什么库我忘记了**
-
-   ### 要查看Linux系统的架构，你可以使用以下命令之一：
+### 要查看Linux系统的架构，你可以使用以下命令之一：
 
 - 用 uname 命令：`uname -m`
 - 这将显示机器的硬件架构信息，例如 x86_64 表示 64 位架构，i386 表示 32 位架构。
-- 然后github去下载对应的版本的测速文件。（我这里的是arm64）
-- https://github.com/XIU2/CloudflareSpeedTest
+- 然后github [CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest)
+- 去下载对应的版本的测速文件。（我这里的是arm64）
 
 - 装jq，你可以使用以下命令：`pkg install jq`
   这将使用Termux的包管理器pkg来安装jq。安装完成后，你就可以在Termux中使用jq来处理JSON数据了。
