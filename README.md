@@ -24,15 +24,25 @@
 #### Termux一键下载运行指令:
 
 - `curl -sSL -o ~/GeoLite2-Country.mmdb https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
+
 - `curl -sSL -o ~/zjccc.sh https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
+
 - 代理加速Termux一键下载运行指令:
+
 - `curl -sSL -o ~/GeoLite2-Country.mmdb https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
+
 - `curl -sSL -o ~/zjccc.sh https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
-- 标准Linux一键下载运行指令:
+
+  ### 标准Linux一键下载运行指令:
+
 - `wget https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/GeoLite2-Country.mmdb -O ~/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
+
 - `wget https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
+
 - 代理加速标准Linux一键下载运行指令:
+
 - `wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/GeoLite2-Country.mmdb -O ~/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
+
 - `wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
 
 #### 安卓版叫做Pydroid3:
