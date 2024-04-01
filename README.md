@@ -9,8 +9,7 @@
 
 - 用 uname 命令：`uname -m`
 - 这将显示机器的硬件架构信息，例如 x86_64 表示 64 位架构，i386 表示 32 位架构。
-- 然后github [CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest)
-- 去下载对应的版本的测速文件。（我这里的是arm64）
+- 然后github [CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest) 去下载对应的版本的测速文件。（我这里的是arm64）
 
 - 装jq，你可以使用以下命令：`pkg install jq`
   这将使用Termux的包管理器pkg来安装jq。安装完成后，你就可以在Termux中使用jq来处理JSON数据了。
@@ -24,17 +23,18 @@
 
 #### Termux一键下载运行指令:
 
-- `curl -sSL -o ~/GeoLite2-Country.mmdb https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
-- `curl -sSL -o ~/zjccc.sh https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
+- `curl -sSL -o ~/GeoLite2-Country.mmdb https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
+- `curl -sSL -o ~/zjccc.sh https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
 - 代理加速Termux一键下载运行指令:
-- `curl -sSL -o ~/GeoLite2-Country.mmdb https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
-- `curl -sSL -o ~/zjccc.sh https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
+- `curl -sSL -o ~/GeoLite2-Country.mmdb https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
+- `curl -sSL -o ~/zjccc.sh https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
 - 标准Linux一键下载运行指令:
-- `wget https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/GeoLite2-Country.mmdb -O ~/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
-- `wget https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
+- `wget https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/GeoLite2-Country.mmdb -O ~/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
+- `wget https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
 - 代理加速标准Linux一键下载运行指令:
-- `wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/GeoLite2-Country.mmdb -O ~/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
-- `wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
+- `wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/GeoLite2-Country.mmdb -O ~/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
+- `wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
+  
 
 #### 安卓版叫做Pydroid3:
 
