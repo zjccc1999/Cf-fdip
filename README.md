@@ -2,52 +2,52 @@
 1. 下载GeoLite2-Country和CloudflareSpeedTest和sh脚本。 
 2. 运行脚本。
 
-经过不懈努力，终于guojia.sh也可以使用本地查询国家地区了，虽然还是没有py快。
+- GeoLite2-Country和libmaxminddb-tools
 
-GeoLite2-Country和libmaxminddb-tools
 
 方法:把GeoLite2-Country复制到termux根目录/data/data/com.termux/files/home/ ，然后输入pkg install libmaxminddb-tools。
 
-Termux一键下载运行指令:
+- Termux一键下载运行指令:
 
-curl -sSL -o ~/zjccc.sh https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
+- curl -sSL -o ~/zjccc.sh https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
 
-代理加速Termux一键下载运行指令:
+- 代理加速Termux一键下载运行指令:
 
-curl -sSL -o ~/zjccc.sh https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
+- curl -sSL -o ~/zjccc.sh https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
 
-标准Linux一键下载运行指令:
+- 标准Linux一键下载运行指令:
 
-wget https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
+- wget https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
 
-代理加速标准Linux一键下载运行指令:
+- 代理加速标准Linux一键下载运行指令:
 
-wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
-要查看Linux系统的架构，你可以使用以下命令之一：
+- wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
+  要查看Linux系统的架构，你可以使用以下命令之一：
 
-用 uname 命令：
-uname -m
-这将显示机器的硬件架构信息，例如 x86_64 表示 64 位架构，i386 表示 32 位架构。
-然后github去下载对应的版本的测速文件。（我这里的是arm64）
-https://github.com/XIU2/CloudflareSpeedTest
+- 用 uname 命令：
 
-装jq，你可以使用以下命令：
+- uname -m
+- 这将显示机器的硬件架构信息，例如 x86_64 表示 64 位架构，i386 表示 32 位架构。
+- 然后github去下载对应的版本的测速文件。（我这里的是arm64）
+- https://github.com/XIU2/CloudflareSpeedTest
 
-pkg install jq
-这将使用Termux的包管理器pkg来安装jq。安装完成后，你就可以在Termux中使用jq来处理JSON数据了。
+- 装jq，你可以使用以下命令：
 
-脚本和测速文件都给满777
-这个是Termux的根目录，下载后的东西放这里面
+- pkg install jq
+  这将使用Termux的包管理器pkg来安装jq。安装完成后，你就可以在Termux中使用jq来处理JSON数据了。
 
-/data/data/com.termux/files/home/
-#识别国家地区还是推荐用Python，秒出。用api有点慢。
-安卓版叫做Pydroid3:
+- 脚本和测速文件都给满777
+- 这个是Termux的根目录，下载后的东西放这里面/data/data/com.termux/files/home/
+- #识别国家地区还是推荐用Python，秒出。用api有点慢。
+- 安卓版叫做Pydroid3:
 
-https://blog.qaiu.top/archives/pydroid3v70
+- https://blog.qaiu.top/archives/pydroid3v70
 
-将2-1py脚本和GeoLite2-Country.mmdb放在/storage/emulated/0/Android/data/ru.iiec.pydroid3/files/目录下
 
-在Windows系统下，可以通过安装**Git Bash**执行.sh，就是测速那里需要改一下。CloudflareSpeedTest 要替换
+- 将2-1py脚本和GeoLite2-Country.mmdb放在/storage/emulated/0/Android/data/ru.iiec.pydroid3/files/目录下
+
+- 在Windows系统下，可以通过安装**Git Bash**执行.sh，就是测速那里需要改一下。CloudflareSpeedTest 要替换
+
 
 # 电脑版教程
 安装Python
