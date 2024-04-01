@@ -1,5 +1,5 @@
 # 安卓和linux使用教程
-1.下载GeoLite2-Country和CloudflareSpeedTest和sh脚本。
+1.下载GeoLite2-Country和CloudflareSpeedTest和sh脚本。  等会上传zjccc1.sh
 
 2.运行脚本。
 
