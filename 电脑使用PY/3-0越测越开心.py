@@ -60,9 +60,9 @@ def set_port(port):
 def run_cmd(port, text, protocol):
     if port and text and protocol:
         if protocol == "HTTP":
-            cmd = f"CloudflareST.exe -tp {port} -f {text} -n 200 -dn 10 -sl 5 -tl 400 -url http://cs.notls.zjccc.onflashdrive.app/200m"
+            cmd = f"CloudflareST.exe -tp {port} -f {text} -n 200 -dn 10 -sl 5 -tl 400 -url http://cs.notls.zjccc.onflashdrive.app/200m -dd"
         elif protocol == "HTTPS":
-            cmd = f"CloudflareST.exe -tp {port} -f {text} -n 200 -dn 10 -sl 5 -tl 400 -url https://cs.notls.zjccc.onflashdrive.app/200m"
+            cmd = f"CloudflareST.exe -tp {port} -f {text} -n 200 -dn 10 -sl 5 -tl 400 -url https://cs.notls.zjccc.onflashdrive.app/200m -dd"
         
         os.system(cmd)
 
