@@ -34,7 +34,6 @@
 - 代理加速标准Linux一键下载运行指令:
 - `wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/GeoLite2-Country.mmdb -O ~/GeoLite2-Country.mmdb && chmod +x ~/GeoLite2-Country.mmdb`
 - `wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh`
-  
 
 #### 安卓版叫做Pydroid3:
 
@@ -68,4 +67,14 @@
 # https://github.com/P3TERX/GeoLite.mmdb
 
 有时间替换下这个，这个是识别地区用的
+
+# 图片
+
+[文件目录](https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL2kvcyFBbHNhNkM0WlpGSjFuQTVSaE4yeTM4NS02VTYy.jpg)
+
+[Termux](https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL2kvcyFBbHNhNkM0WlpGSjFuQThKNk0yRVJWSkxlNTAx.jpg)
+
+[Pydroid 3](https://dlink.host/1drv/aHR0cHM6Ly8xZHJ2Lm1zL2kvcyFBbHNhNkM0WlpGSjFuQkFLT0RiLXFYaXZJTThh.jpg)
+
+
 
