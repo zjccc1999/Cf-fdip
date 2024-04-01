@@ -39,8 +39,10 @@
 #### 安卓版叫做Pydroid3:
 
 - https://blog.qaiu.top/archives/pydroid3v70
-- [](https://www.ecpan.cn/web/#/yunpanProxy?path=%2F%23%2Fdrive%2Foutside&data=6e482b26b7355ce276ff53e58b77d03aE&isShare=1)
-- [](https://www.ecpan.cn/web/#/yunpanProxy?path=%2F%23%2Fdrive%2Foutside&data=e7f868d1d5c5f6661de9f7a0e558c892efCU&isShare=1)
+
+  []: https://www.ecpan.cn/web/#/yunpanProxy?path=%2F%23%2Fdrive%2Foutside&amp;data=6e482b26b7355ce276ff53e58b77d03aE&amp;isShare=1
+
+  
 
 - 将2-1py脚本和GeoLite2-Country.mmdb放在/storage/emulated/0/Android/data/ru.iiec.pydroid3/files/目录下
 
