@@ -16,7 +16,7 @@ check_network_access() {
     fi
 }
 
-# 第一个功能：下载文件并处理
+# 第一个功能：https://zip.baipiao.eu.org下载文件并处理
 function1() {
 cd "$(dirname "$0")"
 
@@ -252,7 +252,7 @@ done
 echo "新的IPv4地址追加完成。"
 }
 
-# 第五个功能：新增的第一个功能
+# 第五个功能：API识别国家地区
 function5() {
     # 函数5的内容
     # Function to process IP addresses and save them to country-specific files
@@ -345,29 +345,29 @@ process_ip_concurrently() {
 # Main menu
 while true; do
     echo "----- 选择一个选项 -----"
-    echo "1. 读取FDYMIP.txt"
-    echo "2. 读取GFYMIP.txt"
-    echo "3. 读取ipdb.txt"
-    echo "4. 读取zipbaipiao.txt"
+    echo "1. 读取zipbaipiao.txt"
+    echo "2. 读取ipdb.txt"
+    echo "3. 读取FDYMIP.txt"
+    echo "4. 读取GFYMIP.txt"
     echo "5. 退出"
     
     read -p "请选择一个选项: " choice
     
     case $choice in
         1)
-            file="FDYMIP.txt"
+            file="zipbaipiao.txt"
             process_ip_concurrently "$file"
             ;;
         2)
-            file="GFYMIP.txt"
-            process_ip_concurrently "$file"
-            ;;
-        3)
             file="ipdb.txt"
             process_ip_concurrently "$file"
             ;;
+        3)
+            file="FDYMIP.txt"
+            process_ip_concurrently "$file"
+            ;;
         4)
-            file="zipbaipiao.txt"
+            file="GFYMIP.txt"
             process_ip_concurrently "$file"
             ;;
         5)
@@ -382,9 +382,121 @@ done
 
 }
 
-# 第六个功能：新增的第二个功能
+# 第六个功能
 function6() {
-    # 函数6的内容
+    # Function to process IP addresses and save them to country-specific files
+process_ip() {
+    local ip=$1
+    local file=$2
+    local country
+    
+    # Check if IP address has already been processed
+    if grep -q "$ip" "${file%%.*}/processed_ips.txt"; then
+        echo "IP地址 $ip 已经处理过，跳过处理。"
+        return
+    fi
+    
+    # Query IP address information using GeoLite2-Country.mmdb
+    country=$(mmdblookup --file ~/GeoLite2-Country.mmdb --ip "$ip" country iso_code)
+    
+    # Extract country code from the response
+    country=$(echo "$country" | sed -n 's/^.*"\(.*\)".*$/\1/p')
+    
+    # Check if country information is valid
+    if [ -z "$country" ]; then
+        echo "查询 $ip 失败，跳过处理。"
+        return
+    fi
+    
+    echo "IP地址: $ip, 国家: $country"
+    echo "$ip" >> "${file%%.*}/processed_ips.txt"
+    echo "$ip" >> "${file%%.*}/$country.txt"
+}
+
+# Remove duplicate IP addresses from a file
+remove_duplicates() {
+    local file=$1
+    awk '!seen[$0]++' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+}
+
+# Main function to process IP addresses
+process_ip_concurrently() {
+    local file=$1
+    local ips=( $(<"$file") )
+    local ip
+    local index=0
+    
+    mkdir -p "${file%%.*}"
+    touch "${file%%.*}/processed_ips.txt"
+
+    while [ $index -lt ${#ips[@]} ]; do
+        for (( i=0; i<5 && index<${#ips[@]}; i++ )); do
+            ip="${ips[index]}"
+            
+            # Check if IP address has already been processed
+            if grep -q "$ip" "${file%%.*}/processed_ips.txt"; then
+                echo "IP地址 $ip 已经处理过，跳过处理。"
+                ((index++))
+                continue
+            fi
+            
+            process_ip "$ip" "$file" &
+            ((index++))
+        done
+    done
+    
+    wait
+    
+    echo "查询完成！"
+    
+    # Remove processed_ips.txt file
+    rm "${file%%.*}/processed_ips.txt"
+    
+    # Remove duplicate IP addresses
+    remove_duplicates "$file"
+}
+
+# Main menu
+while true; do
+    echo "----- 选择一个选项 -----"
+    echo "1. 读取zipbaipiao.txt"
+    echo "2. 读取ipdb.txt"
+    echo "3. 读取FDYMIP.txt"
+    echo "4. 读取GFYMIP.txt"
+    echo "5. 退出"
+    
+    read -p "请选择一个选项: " choice
+    
+    case $choice in
+        1)
+            file="zipbaipiao.txt"
+            process_ip_concurrently "$file"
+            ;;
+        2)
+            file="ipdb.txt"
+            process_ip_concurrently "$file"
+            ;;
+        3)
+            file="FDYMIP.txt"
+            process_ip_concurrently "$file"
+            ;;
+        4)
+            file="GFYMIP.txt"
+            process_ip_concurrently "$file"
+            ;;
+        5)
+            echo "退出程序."
+            break
+            ;;
+        *)
+            echo "无效选项，请重新选择."
+            ;;
+    esac
+done
+}
+# 第七个功能：测速
+function7() {
+    # 函数7的内容
 #!/bin/bash
 
 # 清空屏幕
@@ -474,9 +586,9 @@ echo "测试完成！"
 
 }
 
-# 第七个功能：新增的第三个功能
-function7() {
-    # 函数7的内容
+# 第八个功能：转换成txt
+function8() {
+    # 函数8的内容
     # 提取IP地址
 ips=$(cut -d',' -f1 result.csv | tail -n +2)
 
@@ -506,16 +618,17 @@ echo "已生成带时间戳的文件: $file_name"
 # 主菜单
 while true; do
     echo "请选择一个选项,推荐用ipdb获取ip:"
-    echo "1. zip.baipiao"
+    echo "1. zipbaipiao"
     echo "2. ipdb"
-    echo "3. fdym"
-    echo "4. gfym"
-    echo "5. 识别国家"
-    echo "6. 测速"
-    echo "7. 转txt"
-    echo "8. Exit"
+    echo "3. FDYM"
+    echo "4. GFYM"
+    echo "5. API识别国家"
+    echo "6. 离线识别国家"
+    echo "7. 测速"
+    echo "8. 转txt"
+    echo "9. 退出"
 
-    read -p "选择吧: " choice
+    read -p "选择: " choice
 
     case $choice in
         1) function1 ;;
@@ -525,7 +638,8 @@ while true; do
         5) function5 ;;
         6) function6 ;;
         7) function7 ;;
-        8) echo "退出程序。再见！"; break ;;
+        8) function8 ;;
+        9) echo "退出程序。再见！"; break ;;
         *) echo "无效的选择。请重新选择一个有效的选项。" ;;
     esac
 done
