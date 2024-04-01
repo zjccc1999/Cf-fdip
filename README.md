@@ -1,5 +1,5 @@
 # 安卓和linux使用教程
-测速指令后面加了 -dd，
+测速指令后面加了 -dd，需要测速的自己删除
 感觉没必要测速，测个延迟就行了，能通就行
 1. 下载[GeoLite2-Country](https://github.com/P3TERX/GeoLite.mmdb)
 2. 下载[CloudflareSpeedTest](https://github.com/XIU2/CloudflareSpeedTest)
