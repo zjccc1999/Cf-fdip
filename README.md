@@ -7,8 +7,13 @@ GeoLite2-Country和libmaxminddb-tools
 
 方法:把GeoLite2-Country复制到termux根目录/data/data/com.termux/files/home/ ，然后输入pkg install libmaxminddb-tools。
 
+Termux一键下载运行指令:
+
 curl -sSL -o ~/zjccc1.sh https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc1.sh && chmod +x ~/zjccc1.sh && bash ~/zjccc1.sh
-pkg install libmaxminddb-tools。
+
+标准Linux一键下载运行指令:
+
+wget https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc1.sh -O ~/zjccc1.sh && chmod +x ~/zjccc1.sh && bash ~/zjccc1.sh
 
 要查看Linux系统的架构，你可以使用以下命令之一：
 
