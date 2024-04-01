@@ -1,11 +1,8 @@
 # 安卓和linux使用教程
-1.下载GeoLite2-Country和CloudflareSpeedTest和sh脚本。  等会上传zjccc1.sh
-
-2.运行脚本。
+1. 下载GeoLite2-Country和CloudflareSpeedTest和sh脚本。 
+2. 运行脚本。
 
 经过不懈努力，终于guojia.sh也可以使用本地查询国家地区了，虽然还是没有py快。
-
-zjccc.sh暂时还是api处理，zjccc1.sh加上了本地离线识别功能，需要：
 
 GeoLite2-Country和libmaxminddb-tools
 
@@ -13,19 +10,19 @@ GeoLite2-Country和libmaxminddb-tools
 
 Termux一键下载运行指令:
 
-curl -sSL -o ~/zjccc1.sh https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc1.sh && chmod +x ~/zjccc1.sh && bash ~/zjccc1.sh
+curl -sSL -o ~/zjccc.sh https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
 
 代理加速Termux一键下载运行指令:
 
-curl -sSL -o ~/zjccc1.sh https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc1.sh && chmod +x ~/zjccc1.sh && bash ~/zjccc1.sh
+curl -sSL -o ~/zjccc.sh https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
 
 标准Linux一键下载运行指令:
 
-wget https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc1.sh -O ~/zjccc1.sh && chmod +x ~/zjccc1.sh && bash ~/zjccc1.sh
+wget https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
 
 代理加速标准Linux一键下载运行指令:
 
-wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc1.sh -O ~/zjccc1.sh && chmod +x ~/zjccc1.sh && bash ~/zjccc1.sh
+wget https://mirror.ghproxy.com/https://raw.githubusercontent.com/zjccc999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
 要查看Linux系统的架构，你可以使用以下命令之一：
 
 用 uname 命令：
@@ -34,15 +31,7 @@ uname -m
 然后github去下载对应的版本的测速文件。（我这里的是arm64）
 https://github.com/XIU2/CloudflareSpeedTest
 
-Termux一键下载运行指令:
-
-curl -sSL -o ~/zjccc.sh https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
-
-标准Linux一键下载运行指令:
-
-wget https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/linux/zjccc.sh -O ~/zjccc.sh && chmod +x ~/zjccc.sh && bash ~/zjccc.sh
-
-在Termux上安装jq，你可以使用以下命令：
+装jq，你可以使用以下命令：
 
 pkg install jq
 这将使用Termux的包管理器pkg来安装jq。安装完成后，你就可以在Termux中使用jq来处理JSON数据了。
