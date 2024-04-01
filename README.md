@@ -1,5 +1,6 @@
 # 安卓和linux使用教程
 1.下载GeoLite2-Country和CloudflareSpeedTest和sh脚本。
+
 2.运行脚本。
 
 经过不懈努力，终于guojia.sh也可以使用本地查询国家地区了，虽然还是没有py快。
