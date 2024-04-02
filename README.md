@@ -1,5 +1,6 @@
 # 安卓和linux使用教程
  👋 给CM杨幂点点关注👋👋👋https://github.com/cmliu
+ 
 测速指令后面加了 -dd，需要测速的自己删除
 感觉没必要测速，测个延迟就行了，能通就行
 1. 下载[GeoLite2-Country](https://github.com/P3TERX/GeoLite.mmdb)
