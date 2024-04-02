@@ -64,7 +64,7 @@
 
 # 电脑版教程
 安装Python
-要安装什么库我忘记了，运行失败自己去下载库
+要安装os、requests、zipfile、socket、re 和 tkinter，运行失败自己去下载库
 
 推荐使用IDLE
 
