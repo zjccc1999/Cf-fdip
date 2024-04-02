@@ -24,3 +24,11 @@ pip install pandas
 
 pip install PySocks
 
+安装 chardet 模块。你可以尝试通过以下方式安装它：
+
+使用 pip 命令安装：打开命令行界面，运行以下命令：
+
+pip install chardet
+使用 conda 命令安装（如果你使用的是 Anaconda 环境）：打开 Anaconda Prompt 或命令行界面，运行以下命令：
+
+conda install -c conda-forge chardet
