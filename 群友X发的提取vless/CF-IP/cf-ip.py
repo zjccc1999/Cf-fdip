@@ -20,9 +20,9 @@ REGULAR_PORTS = [
     8443,
     8880,
 ]
-ROOT_PATH = "D:\FQFQFQFQ\CF-IP\IP库"
-UUID = "254ee1c9-62ac-4062-b720-b575fb90d1ea"
-HOST = "notls.zjccc.onflashdrive.app"
+ROOT_PATH = "你的CSV文件目录 在？/IP库"
+UUID = "UUID"
+HOST = "你的节点的域名"
 
 
 def csv2vless(input_filename: str, output_filename: str) -> None:
