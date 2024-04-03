@@ -99,8 +99,8 @@ function3() {
     # 第三个脚本内容
     # 函数用于检查是否为IPv4地址
 is_ipv4() {
-    address=\$1
-    if [[ $address =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    address="\$1"
+    if echo "$address" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$'; then
         return 0
     else
         return 1
@@ -108,7 +108,7 @@ is_ipv4() {
 }
 
 # 要查询的域名列表，每个域名占据一行
-domains='
+domains="
 acjp2.cloudflarest.link
 bestproxy.onecf.eu.org
 acsg.cloudflarest.link
@@ -130,8 +130,8 @@ bestproxy.wcccc.fun
 www.xfltd.top
 1.achen.link
 cf.flyff.eu.org
-ak.yydsb.link
-'
+ak.永遠的神b.link
+"
 
 # 将字符串按换行符分割成数组
 IFS=$'\n' read -r -d '' -a domains_array <<< "$domains"
@@ -154,13 +154,14 @@ for domain in "${domains_array[@]}"; do
 
     for ip in "${ips[@]}"; do
         if ! [[ " ${existing_ips[@]} " =~ " $ip " ]]; then
-            echo "$ip" >> "$file_path"
-            echo "$domain - $ip added to file"
+            echo "$ip"
+            existing_ips+=("$ip")
         fi
     done
-done
+done >> "$file_path"
 
 echo "新的IPv4地址追加完成。"
+
 
 }
 
