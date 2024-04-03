@@ -99,7 +99,7 @@ function3() {
     # 第三个脚本内容
     # 函数用于检查是否为IPv4地址
 is_ipv4() {
-    address="\$1"
+    address="$1"
     if echo "$address" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$'; then
         return 0
     else
@@ -149,8 +149,8 @@ fi
 
 # 打开文件准备追加新的IPv4地址，如果文件不存在则创建
 for domain in "${domains_array[@]}"; do
-    result=$(dig +short "$domain" | grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}')
-    ips=($(echo "$result" | tr ' ' '\n' | sort -u))
+    result=$(nslookup -querytype=A "$domain" | awk '/^Address: / { print $2 }')
+    ips=($(echo "$result" | grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}'))
 
     for ip in "${ips[@]}"; do
         if ! [[ " ${existing_ips[@]} " =~ " $ip " ]]; then
@@ -170,8 +170,17 @@ function4() {
     # 第四个脚本内容
     # 函数用于检查是否为IPv4地址
 is_ipv4() {
-    address=\$1
+    local address="$1"
     if [[ $address =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+is_ipv6() {
+    local address="$1"
+    if [[ $address =~ ^[0-9a-fA-F:]+$ ]]; then
         return 0
     else
         return 1
@@ -226,31 +235,40 @@ cfip.xxxxxxxx.tk
 # 将字符串按换行符分割成数组
 IFS=$'\n' read -r -d '' -a domains_array <<< "$domains"
 
-# 打开文件准备追加新的IPv4地址
+# 打开文件准备追加新的IPv4和IPv6地址，如果文件不存在则创建
 file_path="GFYMIP.txt"
-
-# 读取已有的IP地址
 existing_ips=()
+
 if [ -f "$file_path" ]; then
     while IFS= read -r line; do
         existing_ips+=("$line")
     done < "$file_path"
 fi
 
-# 打开文件准备追加新的IPv4地址，如果文件不存在则创建
+# 查询域名并将新的IPv4和IPv6地址追加到文件
 for domain in "${domains_array[@]}"; do
-    result=$(dig +short "$domain" | grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}')
-    ips=($(echo "$result" | tr ' ' '\n' | sort -u))
+    result=$(nslookup -querytype=A "$domain" | awk '/^Address: / { print $2 }')
+    ipv4s=($(echo "$result" | grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}'))
 
-    for ip in "${ips[@]}"; do
+    for ip in "${ipv4s[@]}"; do
         if ! [[ " ${existing_ips[@]} " =~ " $ip " ]]; then
             echo "$ip" >> "$file_path"
-            echo "$domain - $ip added to file"
+            echo "$domain - $ip (IPv4) added to file"
+        fi
+    done
+
+    result=$(nslookup -querytype=AAAA "$domain" | awk '/^Address: / { print $2 }')
+    ipv6s=($(echo "$result" | grep -E '([0-9a-fA-F:]+)' | grep -v '^$'))
+
+    for ip in "${ipv6s[@]}"; do
+        if ! [[ " ${existing_ips[@]} " =~ " $ip " ]]; then
+            echo "$ip" >> "$file_path"
+            echo "$domain - $ip (IPv6) added to file"
         fi
     done
 done
 
-echo "新的IPv4地址追加完成。"
+echo "新的IPv4和IPv6地址追加完成。"
 }
 
 # 第五个功能：API识别国家地区
