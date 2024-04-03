@@ -1,7 +1,7 @@
 #!/bin/sh
 
 is_ipv4() {
-    address="\$1"
+    address="$1"
     if echo "$address" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$'; then
         return 0
     else
@@ -51,8 +51,8 @@ fi
 
 # 打开文件准备追加新的IPv4地址，如果文件不存在则创建
 for domain in "${domains_array[@]}"; do
-    result=$(dig +short "$domain" | grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}')
-    ips=($(echo "$result" | tr ' ' '\n' | sort -u))
+    result=$(nslookup -querytype=A "$domain" | awk '/^Address: / { print $2 }')
+    ips=($(echo "$result" | grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}'))
 
     for ip in "${ips[@]}"; do
         if ! [[ " ${existing_ips[@]} " =~ " $ip " ]]; then
