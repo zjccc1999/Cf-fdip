@@ -19,7 +19,7 @@
   这将使用Termux的包管理器pkg来安装jq。安装完成后，你就可以在Termux中使用jq来处理JSON数据了。
 
 - 脚本和测速文件都给满777
-- 这个是Termux的根目录，下载后的东西放这里面/data/data/com.termux/files/home/
+- 这个是Termux的根目录，下载后的东西放这里面/data/data/com.termux/files/home/(可能和我的不一样，以你自己的为主，是根目录就行)
 - #识别国家地区还是推荐用Python，秒出。用api有点慢。
 - GeoLite2-Country和libmaxminddb-tools
 
