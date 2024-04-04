@@ -53,7 +53,7 @@
 
 - https://blog.qaiu.top/archives/pydroid3v70
 
-  [移动云空间网盘分享_Pydroid3v7.0汉化整合版主程序](https://www.ecpan.cn/web/#/yunpanProxy?path=%2F%23%2Fdrive%2Foutside&data=6e482b26b7355ce276ff53e58b77d03aE&isShare=1)
+  [网盘分享_Pydroid3v7.2汉化整合版主程序]([https://www.ecpan.cn/web/#/yunpanProxy?path=%2F%23%2Fdrive%2Foutside&data=6e482b26b7355ce276ff53e58b77d03aE&isShare=1](https://lz.qaiu.top/ec/a2953816692ffcf47f9752dfced95b93KbU81gRfSx))
 
   [移动云空间网盘分享_Pydroid3权限插件](https://www.ecpan.cn/web/#/yunpanProxy?path=%2F%23%2Fdrive%2Foutside&data=e7f868d1d5c5f6661de9f7a0e558c892efCU&isShare=1)
 
@@ -63,7 +63,7 @@
 
 - 在Windows系统下，可以通过安装**Git Bash**执行.sh，就是测速那里需要改一下。CloudflareSpeedTest 要替换
 
-手机要使用Python安需要的库，到pydroid3自代的终端运行指令。
+手机要使用Python安需要的库，到pydroid3自带的终端运行指令。
 比如 pip install geoip2
 
 # python教程
