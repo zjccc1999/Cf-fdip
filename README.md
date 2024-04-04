@@ -63,8 +63,10 @@
 
 - 在Windows系统下，可以通过安装**Git Bash**执行.sh，就是测速那里需要改一下。CloudflareSpeedTest 要替换
 
+手机要使用Python安需要的库，到pydroid3自代的终端运行指令。
+比如 pip install geoip2
 
-# 电脑版教程
+# python教程
 安装Python
 要安装os、geoip2、requests、zipfile、socket、re 和 tkinter，运行失败自己去下载库
 
