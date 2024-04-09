@@ -195,14 +195,14 @@ except subprocess.CalledProcessError as e:
 
     # 执行第十七个 PowerShell 命令
 try:
-    subprocess.run(powershell_command_16, shell=True, check=True)
+    subprocess.run(powershell_command_17 shell=True, check=True)
     print("第十七个 PowerShell 程序执行成功！")
 except subprocess.CalledProcessError as e:
     print("第十七个 PowerShell 程序执行失败：", e)
 
 # 执行第十八个 PowerShell 命令
 try:
-    subprocess.run(powershell_command_16, shell=True, check=True)
+    subprocess.run(powershell_command_18, shell=True, check=True)
     print("第十八个 PowerShell 程序执行成功！")
 except subprocess.CalledProcessError as e:
     print("第十八个 PowerShell 程序执行失败：", e)
