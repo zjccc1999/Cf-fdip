@@ -18,7 +18,7 @@ powershell_command_13 = "powershell.exe -Command \"ed iptest -a 3258 -e=false\""
 powershell_command_14 = "powershell.exe -Command \"ed iptest -a 8075 -e=false\""
 powershell_command_15 = "powershell.exe -Command \"ed iptest -a 9808 -e=false\""
 powershell_command_16 = "powershell.exe -Command \"ed iptest -a 16509 -e=false\""
-powershell_command_17 = "powershell.exe -Command \"ed iptest -a 209242 -e=false\""
+powershell_command_17 = "powershell.exe -Command \"ed iptest -a 2438 -e=false\""
 powershell_command_18 = "powershell.exe -Command \"ed iptest -a 9644 -c ICN -e=false\""
 
 # 执行第一个 PowerShell 命令
