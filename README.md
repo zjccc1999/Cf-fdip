@@ -51,7 +51,7 @@
 
 #### 安卓版叫做Pydroid3:
 
-- https://blog.qaiu.top/archives/pydroid3v70
+- https://blog.qaiu.top/archives/pydroid3v72
 
   [网盘分享_Pydroid3v7.2汉化整合版主程序](https://lz.qaiu.top/ec/a2953816692ffcf47f9752dfced95b93KbU81gRfSx)
 
