@@ -43,9 +43,9 @@ http://127.0.0.1:7890
 
 **github.txt**
 
-GH_REPO=用户名/仓库名
+GH_REPO=zjccc1999/Cf-fdip（用户名/仓库名）
 
-GH_TOKEN=github_pat_xxxxxxxxxxxx
+GH_TOKEN=github_pat_xxxxxxxxxxxx（rope权限）
 
 GH_USERNAME=zjccc1999（用户名）
 
