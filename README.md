@@ -52,19 +52,18 @@ GH_USERNAME=zjccc1999（用户名）
 GH_EMAIL=邮箱
 
 # 推荐命令
-python3 cfst.py                    # 只测延迟（最快）
+`python3 cfst.py   `                 # 只测延迟（最快）
 
-python3 cfst.py --full-speed       # 完整测速
+`python3 cfst.py --full-speed`       # 完整测速
 
-python3 cfst.py --force-update     # 强制更新 cfst
-
+`python3 cfst.py --force-update`     # 强制更新 cfst
 
 📊 输出示例
 仅延迟模式（默认）：
 
-text172.64.153.129#US
+*172.64.153.129#US*
 
-104.16.124.96#US
+*104.16.124.96#US*
 
 
 ## 🪟 使用方法（超简单）
