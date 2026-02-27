@@ -63,7 +63,7 @@ text172.64.153.129#US
 ## 🪟 使用方法（超简单）
 
 
-### **2. Windows 专用 README.md**
+# **2. Windows 专用 
 
 1. 下载 `cfst_win.py` 到任意文件夹
 2. 把 `proxy.txt`、`github.txt`、`tg.txt` 放在同一文件夹
