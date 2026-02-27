@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-iStoreOS/N1 Cloudflare 测速脚本 - 最终完美版
-完整测速模式：只保留有速度的IP，并按速度从高到低排序
+iStoreOS/N1 Cloudflare 测速脚本 - 最终版
 """
 
 import os
