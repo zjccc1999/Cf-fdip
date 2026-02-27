@@ -47,6 +47,10 @@ GH_REPO=用户名/仓库名
 
 GH_TOKEN=github_pat_xxxxxxxxxxxx
 
+GH_USERNAME=zjccc1999（用户名）
+
+GH_EMAIL=邮箱
+
 # 推荐命令
 python3 cfst.py                    # 只测延迟（最快）
 python3 cfst.py --full-speed       # 完整测速
