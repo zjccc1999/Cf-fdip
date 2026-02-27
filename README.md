@@ -1,4 +1,4 @@
-#1. Linux / iStoreOS / N1 专用
+# 1. Linux / iStoreOS / N1 专用
 ## 🚀 iStoreOS/N1 Cloudflare 测速脚本（Linux 版）
 
 **自动更新 cfst + 下载走代理 + 测速强制直连 + 仅延迟不带速度**
