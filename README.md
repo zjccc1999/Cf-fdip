@@ -19,11 +19,17 @@
 ## 📁 文件说明
 cfst/
 ├── cfst.py                  ← 主脚本（直接运行）
+
 ├── proxy.txt                ← 代理（可选）
+
 ├── github.txt               ← GitHub 配置（可选）
+
 ├── tg.txt                   ← Telegram 配置（可选）
+
 ├── best_ip.txt              ← 最终结果
+
 └── .cfst_cache/             ← 缓存目录
+
 
 
 ---
