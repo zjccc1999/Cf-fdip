@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Windows Cloudflare 测速脚本 - 性能优化完整版（已修复 v2.3.4 下载链接）
-仅延迟模式不带速度 | 自动更新 cfst | 下载走代理 | 测速强制直连 | heapq 加速
+Windows Cloudflare 测速脚本 - 性能优化完整版（已修复 Windows GBK 解码错误）
 """
 
 import os
@@ -145,7 +144,6 @@ class CloudflareSpeedTestWindows:
 
     def get_cfst_url(self):
         v = self.get_latest_cfst_version()
-        # ✅ 已修复：最新版 Windows 文件名为 cfst_windows_amd64.zip
         url = f"https://github.com/XIU2/CloudflareSpeedTest/releases/download/{v}/cfst_windows_amd64.zip"
         print(f"📥 将使用 Windows cfst {v}")
         return url, v
@@ -187,18 +185,26 @@ class CloudflareSpeedTestWindows:
             return False
 
     def find_cfst_binary(self, bin_dir: Path) -> Path:
-        for p in bin_dir.rglob("cfst.exe"):  # ✅ 修复：新版二进制名为 cfst.exe
+        for p in bin_dir.rglob("cfst.exe"):
             if p.is_file():
                 return p
         raise FileNotFoundError("未找到 cfst.exe")
 
+    # ==================== 关键修复：添加 UTF-8 编码 ====================
     def check_cfst_executable(self, cfst_path: Path) -> bool:
         cache = self.work_dir / "cfst_verified.cache"
         if cache.exists() and (time.time() - cache.stat().st_mtime < 86400):
             print("✅ cfst 已验证（缓存）")
             return True
         try:
-            r = subprocess.run([str(cfst_path), "--version"], capture_output=True, text=True, timeout=8)
+            r = subprocess.run(
+                [str(cfst_path), "--version"],
+                capture_output=True,
+                text=True,
+                encoding='utf-8',      # ← 修复点1
+                errors='ignore',       # ← 修复点2
+                timeout=8
+            )
             if r.returncode == 0:
                 cache.touch()
                 print(f"✅ cfst 验证通过: {r.stdout.strip()}")
@@ -279,8 +285,14 @@ class CloudflareSpeedTestWindows:
 
         if (bin_dir / "cfst.exe").exists() and not self.force_update:
             try:
-                r = subprocess.run([str(bin_dir / "cfst.exe"), "--version"],
-                                 capture_output=True, text=True, timeout=5)
+                r = subprocess.run(
+                    [str(bin_dir / "cfst.exe"), "--version"],
+                    capture_output=True,
+                    text=True,
+                    encoding='utf-8',
+                    errors='ignore',
+                    timeout=5
+                )
                 if version in r.stdout + r.stderr:
                     print(f"✅ 已为最新版 cfst {version}")
                     return bin_dir / "cfst.exe"
