@@ -31,9 +31,13 @@ cfst/
 ## ⚙️ 配置（三个 txt 文件）
 
 **proxy.txt**（国内用户必填）
+
 http://127.0.0.1:7890
+
 **github.txt**
+
 GH_REPO=用户名/仓库名
+
 GH_TOKEN=github_pat_xxxxxxxxxxxx
 
 # 推荐命令
@@ -43,7 +47,9 @@ python3 cfst.py --force-update     # 强制更新 cfst
 
 📊 输出示例
 仅延迟模式（默认）：
+
 text172.64.153.129#US
+
 104.16.124.96#US
 
 
