@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Windows Cloudflare 测速脚本 - 最终版
+Windows Cloudflare 测速脚本 - 超级最终版
+默认: 只测试延迟
+--full-speed: 完整测速（每个国家独立前10 + 速度≥30MB/s）
 """
 import os
 import sys
@@ -18,7 +20,7 @@ from datetime import datetime
 import base64
 import argparse
 import heapq
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 
 class CloudflareSpeedTestWindows:
@@ -32,7 +34,6 @@ class CloudflareSpeedTestWindows:
             'max_per_region': 10,
             'max_total': 100,
             'priority_regions': ["JP", "SG", "HK", "US", "KR", "GB", "IN"],
-            'cfst_args': "-n 200 -t 4 -dd -p 0 -o result.csv",
             'ip_txt_url': "https://raw.githubusercontent.com/XIU2/CloudflareSpeedTest/master/ip.txt",
             'proxy': '',
             'GH_REPO': None,
@@ -44,18 +45,23 @@ class CloudflareSpeedTestWindows:
         }
 
         parser = argparse.ArgumentParser(description="Windows Cloudflare 测速脚本")
-        parser.add_argument('--full-speed', action='store_true', help="启用完整测速（带速度，每个国家独立前10）")
+        parser.add_argument('--full-speed', action='store_true', help="完整测速（每个国家独立前10 + 速度≥30MB/s）")
+        parser.add_argument('--httping', action='store_true', help="使用HTTPing模式（地区码更准）")
+        parser.add_argument('--min-speed', type=float, default=0.0, help="完整测速时最低速度(MB/s)，默认30")
         parser.add_argument('--force-update', action='store_true', help="强制更新 cfst")
         args = parser.parse_args()
 
         self.full_speed = args.full_speed
+        self.httping = args.httping
+        self.min_speed = args.min_speed
         self.force_update = args.force_update
 
         if self.full_speed:
-            self.config['cfst_args'] = "-n 200 -t 4 -dn 100 -dt 8 -p 0 -o result.csv"
-            print("✅ 已切换为完整测速模式（每个国家独立前10，使用CSV倒数第二列速度 + 真实机场码）")
+            if self.min_speed == 0.0:
+                self.min_speed = 30.0
+            print(f"✅ 完整测速模式（每个国家独立前10，速度≥{self.min_speed}MB/s）")
         else:
-            print("✅ 当前模式：仅延迟测试（best_ip.txt 不带速度）")
+            print("✅ 默认模式：仅延迟测试（不测速度，最快）")
 
         self.opener = self._get_urllib_opener()
         self.has_proxy = False
@@ -67,13 +73,11 @@ class CloudflareSpeedTestWindows:
         self.load_telegram_config()
 
         self.airport_to_country = {
-            "SJC": "US", "SEA": "US", "LAX": "US", "ORD": "US", "MIA": "US", "JFK": "US",
-            "IAD": "US", "EWR": "US", "ATL": "US", "DFW": "US", "BOS": "US", "DEN": "US",
-            "PHX": "US", "LAS": "US", "SFO": "US", "PDX": "US", "DTW": "US", "MSP": "US",
-            "NRT": "JP", "HND": "JP", "KIX": "JP", "TYO": "JP", "FUK": "JP", "CTS": "JP",
-            "HKG": "HK", "SIN": "SG", "SGP": "SG", "ICN": "KR", "GMP": "KR",
-            "LHR": "GB", "MAN": "GB", "BOM": "IN", "DEL": "IN",
-            "SYD": "AU", "MEL": "AU", "AMS": "NL", "FRA": "DE", "CDG": "FR", "MAD": "ES",
+            "SJC":"US","SEA":"US","LAX":"US","ORD":"US","MIA":"US","JFK":"US","IAD":"US","EWR":"US","ATL":"US","DFW":"US",
+            "BOS":"US","DEN":"US","PHX":"US","LAS":"US","SFO":"US","PDX":"US","DTW":"US","MSP":"US",
+            "NRT":"JP","HND":"JP","KIX":"JP","TYO":"JP","FUK":"JP","CTS":"JP",
+            "HKG":"HK","SIN":"SG","SGP":"SG","ICN":"KR","GMP":"KR",
+            "LHR":"GB","MAN":"GB","BOM":"IN","DEL":"IN",
         }
 
     def load_proxy(self):
@@ -157,7 +161,7 @@ class CloudflareSpeedTestWindows:
         return url, v
 
     def download_file(self, url: str, dst: Path, max_retries=2) -> bool:
-        print(f"正在下载: {url.split('/')[-1]}（走代理）")
+        print(f"正在下载: {url.split('/')[-1]}")
         dst.parent.mkdir(parents=True, exist_ok=True)
         temp = dst.with_suffix(dst.suffix + '.part')
         for attempt in range(max_retries + 1):
@@ -214,7 +218,7 @@ class CloudflareSpeedTestWindows:
         return False
 
     def run_speed_test(self, cfst_bin: Path) -> bool:
-        print("🚀 开始 Cloudflare 测速...（强制直连）")
+        print("🚀 开始 Cloudflare 测速...")
         cmd = [str(cfst_bin)] + self.config['cfst_args'].split()
         env = os.environ.copy()
         for v in ['http_proxy', 'https_proxy', 'HTTP_PROXY', 'HTTPS_PROXY', 'all_proxy', 'ALL_PROXY']:
@@ -226,8 +230,7 @@ class CloudflareSpeedTestWindows:
             return False
 
     def get_country_for_airport(self, airport: str) -> str:
-        airport = airport.strip().upper()
-        return self.airport_to_country.get(airport, "Other")
+        return self.airport_to_country.get(airport.strip().upper(), "Other")
 
     def get_region_for_ip(self, ip: str) -> str:
         parts = ip.split('.')
@@ -251,34 +254,31 @@ class CloudflareSpeedTestWindows:
             with open(csv_path, "r", encoding="utf-8", newline="") as f:
                 next(csv.reader(f), None)
                 for row in csv.reader(f):
-                    if len(row) < 2 or not row[0].strip():
-                        continue
+                    if len(row) < 2 or not row[0].strip(): continue
                     ip = row[0].strip()
                     try:
                         speed = float(row[-2].strip())
-                        if speed <= 0:
+                        if speed <= 0 or speed < self.min_speed:
                             continue
-                    except (ValueError, TypeError):
+                    except:
                         continue
-                    airport_code = row[-1].strip() if row[-1].strip() else "Unknown"
-                    country = self.get_country_for_airport(airport_code)
+                    airport = row[-1].strip() if row[-1].strip() else "Unknown"
+                    country = self.get_country_for_airport(airport)
                     if country in self.config['priority_regions']:
-                        country_ips[country].append((speed, ip, airport_code))
+                        country_ips[country].append((speed, ip, airport))
         except Exception as e:
             print(f"❌ 解析 result.csv 失败: {e}")
             return []
 
         selected = []
         for country in self.config['priority_regions']:
-            if country not in country_ips or not country_ips[country]:
-                continue
+            if country not in country_ips: continue
             country_ips[country].sort(reverse=True)
-            for speed, ip, airport_code in country_ips[country][:self.config['max_per_region']]:
-                selected.append(f"{ip}#{airport_code}-{speed:.2f}MB/s")
+            for speed, ip, airport in country_ips[country][:self.config['max_per_region']]:
+                selected.append(f"{ip}#{airport}-{speed:.2f}MB/s")
 
         if len(selected) > self.config['max_total']:
             selected = selected[:self.config['max_total']]
-            print(f"⚠️ 超过最大总量 {self.config['max_total']}，截取前 {len(selected)} 条")
         return selected
 
     def _parse_latency_mode(self, csv_path: Path) -> list[str]:
@@ -350,15 +350,25 @@ class CloudflareSpeedTestWindows:
         if not ips:
             print("⚠️ 未找到有效IP")
             return False
-        (self.base_dir / "best_ip.txt").write_text("\n".join(ips) + "\n", encoding="utf-8")
-        print(f"✅ 已提取 {len(ips)} 个最优IP")
+
+        output_path = self.base_dir / "best_ip.txt"
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(f"# Cloudflare 测速结果 - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write(f"# 模式: {'完整测速（每个国家独立前10）' if self.full_speed else '仅延迟测试（默认）'}\n")
+            f.write(f"# 最低速度: ≥{self.min_speed} MB/s | HTTPing: {'是' if self.httping else '否'}\n")
+            f.write(f"# 共 {len(ips)} 条 | 每个国家最多 {self.config['max_per_region']} 条\n")
+            f.write("# 格式: IP#机场码-速度MB/s\n")
+            f.write("# ===============================================\n\n")
+            f.write("\n".join(ips) + "\n")
+
+        print(f"✅ 已生成 best_ip.txt（共 {len(ips)} 条）")
         return True
 
     def upload_to_github(self) -> bool:
         if not self.has_github: return False
         best = self.base_dir / "best_ip.txt"
         if not best.exists(): return False
-        print(f"上传到 GitHub: {self.config['GH_REPO']}（走代理）")
+        print(f"上传到 GitHub: {self.config['GH_REPO']}")
         try:
             content = base64.b64encode(best.read_bytes()).decode('utf-8')
             api_url = f"https://api.github.com/repos/{self.config['GH_REPO']}/contents/best_ip.txt"
@@ -394,10 +404,37 @@ class CloudflareSpeedTestWindows:
             print(f"❌ GitHub 上传失败: {e}")
         return False
 
-    def send_telegram_notification(self, message: str):
+    def send_telegram_notification(self, ips: list):
         if not self.has_telegram: return
+        country_count = Counter()
+        for line in ips:
+            if '#' in line and '-' in line:
+                code = line.split('#')[1].split('-')[0]
+                country = self.get_country_for_airport(code)
+                country_count[country] += 1
+
+        elapsed = time.time() - self.start_time
+        total_time = f"{int(elapsed//60)}分{int(elapsed%60)}秒"
+        mode_str = "完整测速（每个国家独立前10）" if self.full_speed else "仅延迟测试（默认）"
+
+        msg = f"<b>🚀 Cloudflare 测速完成！</b>\n\n"
+        msg += f"⏰ 时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+        msg += f"⏱ 总耗时: <b>{total_time}</b>\n"
+        msg += f"📊 模式: {mode_str}\n"
+        msg += f"📊 最低速度: ≥{self.min_speed} MB/s\n"
+        msg += f"📊 共找到 <b>{len(ips)}</b> 个最优IP\n"
+        msg += f"📊 国家分布: " + " | ".join([f"{k}:{v}" for k, v in country_count.items()]) + "\n\n"
+        if ips:
+            msg += "<b>🏆 前5条最优IP：</b>\n" + "\n".join([f"{i}. <code>{ip}</code>" for i, ip in enumerate(ips[:5], 1)])
+        msg += f"\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+        if self.config.get('GH_REPO'):
+            link = f"https://github.com/{self.config['GH_REPO']}/blob/main/best_ip.txt"
+            msg += f"📂 GitHub: https://github.com/{self.config['GH_REPO']}\n"
+            msg += f"📄 查看结果: <a href=\"{link}\">best_ip.txt</a>\n"
+        msg += "✅ 已上传 GitHub"
+
         url = f"https://api.telegram.org/bot{self.config['TG_BOT_TOKEN']}/sendMessage"
-        data = {"chat_id": self.config['TG_CHAT_ID'], "text": message, "parse_mode": "HTML"}
+        data = {"chat_id": self.config['TG_CHAT_ID'], "text": msg, "parse_mode": "HTML"}
         try:
             req = urllib.request.Request(url, data=json.dumps(data).encode(), headers={'Content-Type': 'application/json'})
             with self.opener.open(req, timeout=15) as resp:
@@ -408,15 +445,34 @@ class CloudflareSpeedTestWindows:
 
     def run(self) -> bool:
         print("=" * 80)
-        print("🚀 Windows Cloudflare 测速脚本 [最终版]")
-        print(f"系统: {platform.machine()} | Python: {platform.python_version()}")
+        print("🚀 Windows Cloudflare 测速脚本 [超级最终版]")
         print(f"开始时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         if self.force_update: print("⚡ 强制更新模式")
         print("=" * 80)
 
+        # 自动清理7天以上缓存
+        try:
+            for item in self.work_dir.iterdir():
+                if item.is_file() and (time.time() - item.stat().st_mtime > 7 * 86400):
+                    item.unlink()
+            print("🧹 已清理旧缓存")
+        except:
+            pass
+
         if not self.ensure_ip_txt(): return False
         cfst_bin = self.prepare_cfst_binary()
         if not cfst_bin: return False
+
+        # 动态构建参数
+        cmd_args = ["-n", "300", "-t", "5", "-p", "0", "-o", "result.csv"]
+        if self.full_speed:
+            cmd_args.extend(["-dn", "100", "-dt", "8", "-sl", str(self.min_speed)])
+            if self.httping:
+                cmd_args.extend(["-httping", "-cfcolo", "SJC,SEA,LAX,ORD,MIA,JFK,IAD,EWR,ATL,DFW,BOS,DEN,PHX,LAS,SFO,PDX,DTW,MSP,NRT,HND,KIX,HKG,SIN,ICN,LHR,BOM"])
+        else:
+            cmd_args.append("-dd")
+        self.config['cfst_args'] = " ".join(cmd_args)
+
         if not self.run_speed_test(cfst_bin): return False
         if not self.process_results(): return False
 
@@ -424,24 +480,8 @@ class CloudflareSpeedTestWindows:
         best_path = self.base_dir / "best_ip.txt"
         if best_path.exists():
             with open(best_path, 'r', encoding='utf-8') as f:
-                ips = [line.strip() for line in f if line.strip()]
-            elapsed = time.time() - self.start_time
-            total_time = f"{int(elapsed//60)}分{int(elapsed%60)}秒"
-            mode_str = "完整测速" if self.full_speed else "仅延迟测试"
-            msg = f"<b>🚀 Cloudflare 测速完成！</b>\n\n"
-            msg += f"⏰ 时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-            msg += f"⏱ 总耗时: <b>{total_time}</b>\n"
-            msg += f"📊 模式: {mode_str}\n"
-            msg += f"📊 共找到 <b>{len(ips)}</b> 个最优IP\n\n"
-            if ips:
-                msg += "<b>🏆 前5条最优IP：</b>\n" + "\n".join([f"{i}. <code>{ip}</code>" for i, ip in enumerate(ips[:5], 1)])
-            msg += f"\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-            if self.config.get('GH_REPO'):
-                link = f"https://github.com/{self.config['GH_REPO']}/blob/main/best_ip.txt"
-                msg += f"📂 GitHub: https://github.com/{self.config['GH_REPO']}\n"
-                msg += f"📄 查看结果: <a href=\"{link}\">best_ip.txt</a>\n"
-            msg += "✅ 已上传 GitHub" if upload_ok else "⚠️ GitHub 上传失败"
-            self.send_telegram_notification(msg)
+                ips = [line.strip() for line in f if line.strip() and not line.startswith('#')]
+            self.send_telegram_notification(ips)
         self.print_summary()
         return True
 
@@ -450,12 +490,12 @@ class CloudflareSpeedTestWindows:
         print("\n" + "=" * 80)
         print("🎉 任务完成！")
         print(f"总耗时: {int(elapsed//60)}分 {int(elapsed%60)}秒")
-        print(f"模式: {'完整测速（每个国家前10 + CSV真实机场码）' if self.full_speed else '仅延迟测试（不带速度）'}")
+        print(f"模式: {'完整测速（每个国家前10，速度≥{self.min_speed}MB/s）' if self.full_speed else '仅延迟测试（默认）'}")
         print(f"最佳IP文件: {self.base_dir / 'best_ip.txt'}")
         best_path = self.base_dir / "best_ip.txt"
         if best_path.exists():
             with open(best_path) as f:
-                ips = [line.strip() for line in f if line.strip()]
+                ips = [line.strip() for line in f if line.strip() and not line.startswith('#')]
                 print(f"最优IP数量: {len(ips)}")
                 if ips:
                     print("\n前5个最优IP:")
