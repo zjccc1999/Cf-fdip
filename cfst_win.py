@@ -427,8 +427,6 @@ class CloudflareSpeedTestWindows:
         msg += f"⏱ 总耗时: <b>{total_time}</b>\n"
         msg += f"📊 模式: {mode_str}\n"
         msg += f"📊 测速参数: {self.config['cfst_args']}\n"
-        msg += f"📊 最低速度: ≥{self.min_speed} MB/s\n"
-        msg += f"📊 延迟上限: ≤{self.max_latency} ms\n"
         msg += f"📊 共找到 <b>{len(ips)}</b> 个最优IP\n"
         msg += f"📊 国家分布: " + " | ".join([f"{k}:{v}" for k, v in country_count.items()]) + "\n\n"
         if ips:
