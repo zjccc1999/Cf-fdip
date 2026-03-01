@@ -442,7 +442,9 @@ class CloudflareSpeedTestIStoreOS:
         return False
 
     def send_telegram_notification(self, ips: list):
-        if not self.has_telegram: return
+        if not self.has_telegram:
+            return
+
         country_count = Counter()
         for line in ips:
             if '#' in line and '-' in line:
@@ -459,8 +461,8 @@ class CloudflareSpeedTestIStoreOS:
         msg += f"⏱ 总耗时: <b>{total_time}</b>\n"
         msg += f"📊 模式: {mode_str}\n"
         msg += f"📊 测速参数: {self.config['cfst_args']}\n"
-        msg += f"📊 最低速度: ≥30 MB/s\n"
-        msg += f"📊 延迟上限: ≤500 ms\n"
+        msg += f"📊 最低速度: ≥{self.min_speed} MB/s\n"
+        msg += f"📊 延迟上限: ≤{self.max_latency} ms\n"
         msg += f"📊 共找到 <b>{len(ips)}</b> 个最优IP\n"
         msg += f"📊 国家分布: " + " | ".join([f"{k}:{v}" for k, v in country_count.items()]) + "\n\n"
         if ips:
@@ -474,13 +476,16 @@ class CloudflareSpeedTestIStoreOS:
 
         url = f"https://api.telegram.org/bot{self.config['TG_BOT_TOKEN']}/sendMessage"
         data = {"chat_id": self.config['TG_CHAT_ID'], "text": msg, "parse_mode": "HTML"}
+        
         try:
             req = urllib.request.Request(url, data=json.dumps(data).encode(), headers={'Content-Type': 'application/json'})
-            with self.opener.open(req, timeout=15) as resp:
+            with self.opener.open(req, timeout=20) as resp:
                 if resp.status == 200:
                     print(Fore.GREEN + "✅ Telegram 通知已发送")
+                else:
+                    print(Fore.YELLOW + f"⚠️ Telegram 发送状态异常: {resp.status}")
         except Exception as e:
-            print(Fore.RED + f"⚠️ Telegram 发送失败: {e}")
+            print(Fore.YELLOW + f"⚠️ Telegram 发送失败（跳过）: {e}")
 
     def run(self) -> bool:
         print(Fore.CYAN + "=" * 80)
