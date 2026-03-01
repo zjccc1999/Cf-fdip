@@ -1,3 +1,6 @@
+### 安装颜色高亮（不需要发AI修改下）
+pip install colorama -i https://mirrors.aliyun.com/pypi/simple/
+
 # 1. Linux / iStoreOS / N1 专用
 ## 🚀 iStoreOS/N1 Cloudflare 测速脚本（Linux 版）
 
