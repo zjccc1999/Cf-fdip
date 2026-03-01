@@ -8,6 +8,7 @@
 - 扩展功能：支持代理、GitHub自动同步结果、Telegram通知
 - 纯Python脚本，开箱即用，适配软路由轻量化运行
 
+## 加速地址 `https://hub.glowp.xyz/https://raw.githubusercontent.com/zjccc1999/Cf-fdip/main/best_ip.txt`
 ## 📦 依赖安装
 脚本仅需1个第三方库，执行以下命令安装：
 ```bash
