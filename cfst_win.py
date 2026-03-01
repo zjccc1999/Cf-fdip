@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Windows Cloudflare 测速脚本 - 超级最终版
-默认: 只测试延迟
---full-speed: 完整测速（每个国家独立前10 + 速度≥30MB/s）
+Windows Cloudflare 测速脚本 - 最终版
+默认参数: -n 200 -t 4 -dn 50 -dt 8 -tl 500 -sl 30 -p 0
 """
 import os
 import sys
@@ -21,6 +20,10 @@ import base64
 import argparse
 import heapq
 from collections import defaultdict, Counter
+
+# 颜色高亮支持
+from colorama import init, Fore, Style
+init(autoreset=True)
 
 
 class CloudflareSpeedTestWindows:
@@ -45,23 +48,23 @@ class CloudflareSpeedTestWindows:
         }
 
         parser = argparse.ArgumentParser(description="Windows Cloudflare 测速脚本")
-        parser.add_argument('--full-speed', action='store_true', help="完整测速（每个国家独立前10 + 速度≥30MB/s）")
-        parser.add_argument('--httping', action='store_true', help="使用HTTPing模式（地区码更准）")
-        parser.add_argument('--min-speed', type=float, default=0.0, help="完整测速时最低速度(MB/s)，默认30")
+        parser.add_argument('--full-speed', action='store_true', help="完整测速（每个国家独立前10）")
         parser.add_argument('--force-update', action='store_true', help="强制更新 cfst")
         args = parser.parse_args()
 
         self.full_speed = args.full_speed
-        self.httping = args.httping
-        self.min_speed = args.min_speed
         self.force_update = args.force_update
 
+        print(Fore.CYAN + "=" * 80)
+        print(Fore.GREEN + "🚀 Windows Cloudflare 测速脚本 [最终版]")
+        print(f"开始时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        if self.force_update:
+            print(Fore.YELLOW + "⚡ 强制更新模式")
         if self.full_speed:
-            if self.min_speed == 0.0:
-                self.min_speed = 30.0
-            print(f"✅ 完整测速模式（每个国家独立前10，速度≥{self.min_speed}MB/s）")
+            print(Fore.GREEN + "完整测速模式（每个国家独立前10）")
         else:
-            print("✅ 默认模式：仅延迟测试（不测速度，最快）")
+            print(Fore.GREEN + "默认模式：仅延迟测试")
+        print(Fore.CYAN + "=" * 80)
 
         self.opener = self._get_urllib_opener()
         self.has_proxy = False
@@ -87,7 +90,7 @@ class CloudflareSpeedTestWindows:
             if p:
                 self.config['proxy'] = p
                 self.has_proxy = True
-                print(f"✅ 已加载代理: {p}")
+                print(Fore.GREEN + f"✅ 已加载代理: {p}")
 
     def load_github_config(self):
         f = self.base_dir / "github.txt"
@@ -101,7 +104,7 @@ class CloudflareSpeedTestWindows:
                         self.config[key] = v.strip()
             if self.config.get('GH_TOKEN') and self.config.get('GH_REPO'):
                 self.has_github = True
-                print(f"✅ GitHub 配置已加载: {self.config['GH_REPO']}")
+                print(Fore.GREEN + f"✅ GitHub 配置已加载: {self.config['GH_REPO']}")
 
     def load_telegram_config(self):
         f = self.base_dir / "tg.txt"
@@ -115,7 +118,7 @@ class CloudflareSpeedTestWindows:
                         self.config[key] = v.strip()
             if self.config.get('TG_BOT_TOKEN') and self.config.get('TG_CHAT_ID'):
                 self.has_telegram = True
-                print("✅ Telegram 配置已加载")
+                print(Fore.GREEN + "✅ Telegram 配置已加载")
 
     def setup_directories(self):
         self.work_dir.mkdir(parents=True, exist_ok=True)
@@ -137,31 +140,38 @@ class CloudflareSpeedTestWindows:
             try:
                 v, ts = cache.read_text(encoding='utf-8').strip().split('|')
                 if time.time() - float(ts) < 86400:
-                    print(f"✅ 使用缓存最新版本: {v}")
+                    print(Fore.GREEN + f"✅ 使用缓存最新版本: {v}")
                     return v
-            except:
-                pass
-        print("🔍 检查 cfst 最新版本...")
+            except Exception as e:
+                print(Fore.YELLOW + f"缓存读取失败: {e}，将重新获取")
+
+        print(Fore.CYAN + "🔍 检查 cfst 最新版本（从 GitHub API 获取）...")
+
         try:
-            req = urllib.request.Request("https://api.github.com/repos/XIU2/CloudflareSpeedTest/releases/latest",
-                                       headers={"User-Agent": "iStoreOS-CFST/1.0"})
+            req = urllib.request.Request(
+                "https://api.github.com/repos/XIU2/CloudflareSpeedTest/releases/latest",
+                headers={"User-Agent": "iStoreOS-CFST/1.0"}
+            )
             with self.opener.open(req, timeout=15) as r:
-                v = json.loads(r.read().decode())['tag_name']
+                data = json.loads(r.read().decode())
+                v = data['tag_name']
             cache.write_text(f"{v}|{time.time()}", encoding='utf-8')
-            print(f"✅ 最新 cfst 版本: {v}")
+            print(Fore.GREEN + f"✅ 成功获取最新版本: {v}")
             return v
-        except:
-            print("⚠️ 使用稳定版 v2.3.4")
-            return "v2.3.4"
+
+        except Exception as e:
+            print(Fore.RED + f"❌ 获取最新 cfst 版本失败: {e}")
+            print(Fore.RED + "请检查网络连接或稍后再试")
+            sys.exit(1)
 
     def get_cfst_url(self):
         v = self.get_latest_cfst_version()
         url = f"https://github.com/XIU2/CloudflareSpeedTest/releases/download/{v}/cfst_windows_amd64.zip"
-        print(f"📥 将使用 Windows cfst {v}")
+        print(Fore.CYAN + f"📥 将使用 Windows cfst {v}")
         return url, v
 
     def download_file(self, url: str, dst: Path, max_retries=2) -> bool:
-        print(f"正在下载: {url.split('/')[-1]}")
+        print(Fore.CYAN + f"正在下载: {url.split('/')[-1]}")
         dst.parent.mkdir(parents=True, exist_ok=True)
         temp = dst.with_suffix(dst.suffix + '.part')
         for attempt in range(max_retries + 1):
@@ -175,10 +185,10 @@ class CloudflareSpeedTestWindows:
                     with open(temp, 'ab' if downloaded else 'wb') as f:
                         shutil.copyfileobj(r, f, length=128 * 1024)
                 temp.rename(dst)
-                print(f"✅ 下载完成 ({dst.stat().st_size // 1024:,} KB)")
+                print(Fore.GREEN + f"✅ 下载完成 ({dst.stat().st_size // 1024:,} KB)")
                 return True
             except Exception as e:
-                print(f"⚠️ 下载失败 (尝试 {attempt+1}): {e}")
+                print(Fore.YELLOW + f"⚠️ 下载失败 (尝试 {attempt+1}): {e}")
                 if attempt == max_retries:
                     return False
                 time.sleep(2)
@@ -187,13 +197,13 @@ class CloudflareSpeedTestWindows:
     def extract_archive(self, archive: Path, out_dir: Path) -> bool:
         out_dir.mkdir(parents=True, exist_ok=True)
         try:
-            print(f"解压: {archive.name}")
+            print(Fore.CYAN + f"解压: {archive.name}")
             with zipfile.ZipFile(archive) as z:
                 z.extractall(out_dir)
-            print("✅ 解压完成")
+            print(Fore.GREEN + "✅ 解压完成")
             return True
         except Exception as e:
-            print(f"❌ 解压失败: {e}")
+            print(Fore.RED + f"❌ 解压失败: {e}")
             return False
 
     def find_cfst_binary(self, bin_dir: Path) -> Path:
@@ -205,20 +215,21 @@ class CloudflareSpeedTestWindows:
     def check_cfst_executable(self, cfst_path: Path) -> bool:
         cache = self.work_dir / "cfst_verified.cache"
         if cache.exists() and (time.time() - cache.stat().st_mtime < 86400):
-            print("✅ cfst 已验证（缓存）")
+            print(Fore.GREEN + "✅ cfst 已验证（缓存）")
             return True
         try:
             r = subprocess.run([str(cfst_path), "--version"], capture_output=True, text=True, encoding='utf-8', errors='ignore', timeout=8)
             if r.returncode == 0:
                 cache.touch()
-                print(f"✅ cfst 验证通过: {r.stdout.strip()}")
+                print(Fore.GREEN + f"✅ cfst 验证通过: {r.stdout.strip()}")
                 return True
         except:
             pass
+        print(Fore.RED + "❌ cfst 可执行文件验证失败")
         return False
 
     def run_speed_test(self, cfst_bin: Path) -> bool:
-        print("🚀 开始 Cloudflare 测速...")
+        print(Fore.CYAN + "🚀 开始 Cloudflare 测速...")
         cmd = [str(cfst_bin)] + self.config['cfst_args'].split()
         env = os.environ.copy()
         for v in ['http_proxy', 'https_proxy', 'HTTP_PROXY', 'HTTPS_PROXY', 'all_proxy', 'ALL_PROXY']:
@@ -226,7 +237,8 @@ class CloudflareSpeedTestWindows:
         try:
             subprocess.run(cmd, cwd=self.base_dir, env=env, check=True)
             return True
-        except:
+        except Exception as e:
+            print(Fore.RED + f"❌ 测速失败: {e}")
             return False
 
     def get_country_for_airport(self, airport: str) -> str:
@@ -246,19 +258,19 @@ class CloudflareSpeedTestWindows:
         return "Other"
 
     def parse_top_ips_by_region(self, csv_path: Path) -> list[str]:
-        if not self.full_speed:
-            return self._parse_latency_mode(csv_path)
-
         country_ips = defaultdict(list)
+        seen_ips = set()
+
         try:
             with open(csv_path, "r", encoding="utf-8", newline="") as f:
                 next(csv.reader(f), None)
                 for row in csv.reader(f):
                     if len(row) < 2 or not row[0].strip(): continue
                     ip = row[0].strip()
+                    if ip in seen_ips: continue
                     try:
                         speed = float(row[-2].strip())
-                        if speed <= 0 or speed < self.min_speed:
+                        if speed <= 0 or speed < 30:
                             continue
                     except:
                         continue
@@ -266,8 +278,9 @@ class CloudflareSpeedTestWindows:
                     country = self.get_country_for_airport(airport)
                     if country in self.config['priority_regions']:
                         country_ips[country].append((speed, ip, airport))
+                        seen_ips.add(ip)
         except Exception as e:
-            print(f"❌ 解析 result.csv 失败: {e}")
+            print(Fore.RED + f"❌ 解析 result.csv 失败: {e}")
             return []
 
         selected = []
@@ -276,41 +289,14 @@ class CloudflareSpeedTestWindows:
             country_ips[country].sort(reverse=True)
             for speed, ip, airport in country_ips[country][:self.config['max_per_region']]:
                 selected.append(f"{ip}#{airport}-{speed:.2f}MB/s")
-
-        if len(selected) > self.config['max_total']:
-            selected = selected[:self.config['max_total']]
         return selected
-
-    def _parse_latency_mode(self, csv_path: Path) -> list[str]:
-        region_heaps = {r: [] for r in self.config['priority_regions']}
-        try:
-            with open(csv_path, "r", encoding="utf-8", newline="") as f:
-                next(csv.reader(f), None)
-                for row in csv.reader(f):
-                    if len(row) < 5 or not row[0].strip(): continue
-                    ip = row[0].strip()
-                    latency = float(row[4]) if row[4].strip() else 9999.0
-                    region = self.get_region_for_ip(ip)
-                    if region in region_heaps:
-                        item = (latency, 0.0, ip, region)
-                        h = region_heaps[region]
-                        if len(h) < self.config['max_per_region']:
-                            heapq.heappush(h, item)
-                        elif item[0] < h[0][0]:
-                            heapq.heappushpop(h, item)
-        except:
-            pass
-        selected = []
-        for region, heap in region_heaps.items():
-            for _, _, ip, reg in sorted(heap):
-                selected.append(f"{ip}#{reg}")
-        return selected[:self.config['max_total']]
 
     def ensure_ip_txt(self) -> bool:
         p = self.base_dir / "ip.txt"
         if p.exists():
-            print("✅ ip.txt 已存在")
+            print(Fore.GREEN + "✅ ip.txt 已存在")
             return True
+        print(Fore.CYAN + "下载 ip.txt...")
         return self.download_file(self.config['ip_txt_url'], p)
 
     def prepare_cfst_binary(self):
@@ -322,53 +308,70 @@ class CloudflareSpeedTestWindows:
             try:
                 r = subprocess.run([str(bin_dir / "cfst.exe"), "--version"], capture_output=True, text=True, encoding='utf-8', errors='ignore', timeout=5)
                 if version in r.stdout + r.stderr:
-                    print(f"✅ 已为最新版 cfst {version}")
+                    print(Fore.GREEN + f"✅ 已为最新版 cfst {version}")
                     return bin_dir / "cfst.exe"
             except:
                 pass
-        print(f"📥 准备 cfst {version}...")
+        print(Fore.CYAN + f"📥 准备 cfst {version}...")
         if not archive.exists() or self.force_update:
             if not self.download_file(url, archive):
+                print(Fore.RED + "❌ 下载 cfst 失败")
                 return None
         if bin_dir.exists():
             shutil.rmtree(bin_dir)
         if not self.extract_archive(archive, bin_dir):
+            print(Fore.RED + "❌ 解压 cfst 失败")
             return None
         try:
             cfst_bin = self.find_cfst_binary(bin_dir)
             return cfst_bin if self.check_cfst_executable(cfst_bin) else None
         except Exception as e:
-            print(f"❌ cfst 准备失败: {e}")
+            print(Fore.RED + f"❌ cfst 准备失败: {e}")
             return None
 
     def process_results(self) -> bool:
         csv_path = self.base_dir / "result.csv"
         if not csv_path.exists():
-            print("❌ result.csv 未找到")
+            print(Fore.RED + "❌ result.csv 未找到")
             return False
         ips = self.parse_top_ips_by_region(csv_path)
         if not ips:
-            print("⚠️ 未找到有效IP")
+            print(Fore.YELLOW + "⚠️ 未找到有效IP")
             return False
+
+        country_groups = defaultdict(list)
+        for line in ips:
+            if '#' in line:
+                airport = line.split('#')[1].split('-')[0]
+                country = self.get_country_for_airport(airport)
+                country_groups[country].append(line)
 
         output_path = self.base_dir / "best_ip.txt"
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(f"# Cloudflare 测速结果 - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-            f.write(f"# 模式: {'完整测速（每个国家独立前10）' if self.full_speed else '仅延迟测试（默认）'}\n")
-            f.write(f"# 最低速度: ≥{self.min_speed} MB/s | HTTPing: {'是' if self.httping else '否'}\n")
-            f.write(f"# 共 {len(ips)} 条 | 每个国家最多 {self.config['max_per_region']} 条\n")
+            f.write(f"# 模式: {'完整测速' if self.full_speed else '仅延迟测试（默认）'}\n")
+            f.write(f"# 测速参数: {self.config['cfst_args']}\n")
+            f.write(f"# 最低速度: ≥30 MB/s\n")
+            f.write(f"# 延迟上限: ≤500 ms\n")
+            f.write(f"# 共 {len(ips)} 条 | 每个国家最多 10 条\n")
             f.write("# 格式: IP#机场码-速度MB/s\n")
             f.write("# ===============================================\n\n")
-            f.write("\n".join(ips) + "\n")
 
-        print(f"✅ 已生成 best_ip.txt（共 {len(ips)} 条）")
+            for country in self.config['priority_regions']:
+                if country in country_groups:
+                    f.write(f"# === {country} ===\n")
+                    for ip_line in country_groups[country]:
+                        f.write(ip_line + "\n")
+                    f.write("\n")
+
+        print(Fore.GREEN + f"✅ 已生成 best_ip.txt（共 {len(ips)} 条，按国家分组）")
         return True
 
     def upload_to_github(self) -> bool:
         if not self.has_github: return False
         best = self.base_dir / "best_ip.txt"
         if not best.exists(): return False
-        print(f"上传到 GitHub: {self.config['GH_REPO']}")
+        print(Fore.CYAN + f"上传到 GitHub: {self.config['GH_REPO']}")
         try:
             content = base64.b64encode(best.read_bytes()).decode('utf-8')
             api_url = f"https://api.github.com/repos/{self.config['GH_REPO']}/contents/best_ip.txt"
@@ -398,10 +401,10 @@ class CloudflareSpeedTestWindows:
             req.add_header('User-Agent', 'iStoreOS-CFST/1.0')
             with opener.open(req) as resp:
                 if resp.status in (200, 201):
-                    print("✅ GitHub 上传成功")
+                    print(Fore.GREEN + "✅ GitHub 上传成功")
                     return True
         except Exception as e:
-            print(f"❌ GitHub 上传失败: {e}")
+            print(Fore.RED + f"❌ GitHub 上传失败: {e}")
         return False
 
     def send_telegram_notification(self, ips: list):
@@ -415,13 +418,15 @@ class CloudflareSpeedTestWindows:
 
         elapsed = time.time() - self.start_time
         total_time = f"{int(elapsed//60)}分{int(elapsed%60)}秒"
-        mode_str = "完整测速（每个国家独立前10）" if self.full_speed else "仅延迟测试（默认）"
+        mode_str = "完整测速" if self.full_speed else "仅延迟测试（默认）"
 
         msg = f"<b>🚀 Cloudflare 测速完成！</b>\n\n"
         msg += f"⏰ 时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
         msg += f"⏱ 总耗时: <b>{total_time}</b>\n"
         msg += f"📊 模式: {mode_str}\n"
-        msg += f"📊 最低速度: ≥{self.min_speed} MB/s\n"
+        msg += f"📊 测速参数: {self.config['cfst_args']}\n"
+        msg += f"📊 最低速度: ≥30 MB/s\n"
+        msg += f"📊 延迟上限: ≤500 ms\n"
         msg += f"📊 共找到 <b>{len(ips)}</b> 个最优IP\n"
         msg += f"📊 国家分布: " + " | ".join([f"{k}:{v}" for k, v in country_count.items()]) + "\n\n"
         if ips:
@@ -439,23 +444,19 @@ class CloudflareSpeedTestWindows:
             req = urllib.request.Request(url, data=json.dumps(data).encode(), headers={'Content-Type': 'application/json'})
             with self.opener.open(req, timeout=15) as resp:
                 if resp.status == 200:
-                    print("✅ Telegram 通知已发送")
+                    print(Fore.GREEN + "✅ Telegram 通知已发送")
         except Exception as e:
-            print(f"⚠️ Telegram 发送失败: {e}")
+            print(Fore.RED + f"⚠️ Telegram 发送失败: {e}")
 
     def run(self) -> bool:
-        print("=" * 80)
-        print("🚀 Windows Cloudflare 测速脚本 [超级最终版]")
-        print(f"开始时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        if self.force_update: print("⚡ 强制更新模式")
-        print("=" * 80)
+        print(Fore.CYAN + "=" * 80)
 
-        # 自动清理7天以上缓存
+        # 自动清理缓存
         try:
             for item in self.work_dir.iterdir():
                 if item.is_file() and (time.time() - item.stat().st_mtime > 7 * 86400):
                     item.unlink()
-            print("🧹 已清理旧缓存")
+            print(Fore.GREEN + "🧹 已清理旧缓存")
         except:
             pass
 
@@ -463,15 +464,27 @@ class CloudflareSpeedTestWindows:
         cfst_bin = self.prepare_cfst_binary()
         if not cfst_bin: return False
 
-        # 动态构建参数
-        cmd_args = ["-n", "300", "-t", "5", "-p", "0", "-o", "result.csv"]
-        if self.full_speed:
-            cmd_args.extend(["-dn", "100", "-dt", "8", "-sl", str(self.min_speed)])
-            if self.httping:
-                cmd_args.extend(["-httping", "-cfcolo", "SJC,SEA,LAX,ORD,MIA,JFK,IAD,EWR,ATL,DFW,BOS,DEN,PHX,LAS,SFO,PDX,DTW,MSP,NRT,HND,KIX,HKG,SIN,ICN,LHR,BOM"])
-        else:
+        # 固定参数
+        cmd_args = [
+            "-n", "200",
+            "-t", "4",
+            "-dn", "50",
+            "-dt", "8",
+            "-sl", "30",
+            "-tl", "500",
+            "-p", "0",
+            "-o", "result.csv"
+        ]
+
+        if not self.full_speed:
             cmd_args.append("-dd")
+
         self.config['cfst_args'] = " ".join(cmd_args)
+
+        # 显示当前测速参数
+        print(Fore.BLUE + "\n当前测速参数：")
+        print(Fore.BLUE + self.config['cfst_args'])
+        print()
 
         if not self.run_speed_test(cfst_bin): return False
         if not self.process_results(): return False
@@ -487,10 +500,10 @@ class CloudflareSpeedTestWindows:
 
     def print_summary(self):
         elapsed = time.time() - self.start_time
-        print("\n" + "=" * 80)
-        print("🎉 任务完成！")
+        print(Fore.CYAN + "\n" + "=" * 80)
+        print(Fore.GREEN + "🎉 任务完成！")
         print(f"总耗时: {int(elapsed//60)}分 {int(elapsed%60)}秒")
-        print(f"模式: {'完整测速（每个国家前10，速度≥{self.min_speed}MB/s）' if self.full_speed else '仅延迟测试（默认）'}")
+        print(f"模式: {'完整测速' if self.full_speed else '仅延迟测试（默认）'}")
         print(f"最佳IP文件: {self.base_dir / 'best_ip.txt'}")
         best_path = self.base_dir / "best_ip.txt"
         if best_path.exists():
@@ -501,7 +514,7 @@ class CloudflareSpeedTestWindows:
                     print("\n前5个最优IP:")
                     for i, ip in enumerate(ips[:5], 1):
                         print(f" {i}. {ip}")
-        print("=" * 80)
+        print(Fore.CYAN + "=" * 80)
 
 
 def main():
@@ -509,10 +522,10 @@ def main():
     try:
         return 0 if speedtest.run() else 1
     except KeyboardInterrupt:
-        print("\n👋 用户中断操作")
+        print(Fore.YELLOW + "\n👋 用户中断操作")
         return 130
     except Exception as e:
-        print(f"❌ 未预期错误: {e}")
+        print(Fore.RED + f"❌ 未预期错误: {e}")
         return 1
 
 

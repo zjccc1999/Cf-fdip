@@ -1,1 +1,1 @@
-python3 cfst_win.py --full-speed
+python cfst_win.py --full-speed
