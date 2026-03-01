@@ -499,7 +499,7 @@ class CloudflareSpeedTestIStoreOS:
                 msg += "<b>🏆 前5条最优IP：</b>\n" + "\n".join([f"{i}. <code>{ip}</code>" for i, ip in enumerate(ips[:5], 1)])
             msg += f"\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
             if self.config.get('GH_REPO'):
-                link = f"https://github.com/{self.config['GH_REPO']}/blob/main/best_ip.txt"
+                link = f"https://raw.githubusercontent.com/{self.config['GH_REPO']}/refs/heads/main/best_ip.txt"
                 msg += f"📂 GitHub: https://github.com/{self.config['GH_REPO']}\n"
                 msg += f"📄 查看结果: <a href=\"{link}\">best_ip.txt</a>\n"
             msg += "✅ 已上传 GitHub" if upload_ok else "⚠️ GitHub 上传失败"
