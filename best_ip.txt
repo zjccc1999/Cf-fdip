@@ -1,107 +1,17 @@
-# Cloudflare 测速结果 - 2026-03-02 02:47:36
-# 模式: 仅延迟测试（默认）
-# 测速参数: -n 100 -t 2 -dn 10 -dt 5 -sl 30 -tl 400 -p 0 -o result.csv -dd
-# 共 100 条
-# 格式: IP#cloudflare-延迟ms
+# Cloudflare 测速结果 - 2026-03-02 03:31:00
+# 模式: 仅延迟测试
+# 测速参数: -n 100 -t 2 -dn 5 -dt 5 -sl 5 -tl 400 -p 0 -o result.csv -dd
+# 共 10 条
+# 格式: IP#cf-延迟ms
 # ===============================================
 
-104.25.251.2#cloudflare-90.27ms
-104.18.38.0#cloudflare-91.51ms
-104.25.243.250#cloudflare-92.14ms
-104.25.242.226#cloudflare-92.26ms
-104.25.241.198#cloudflare-92.39ms
-104.25.252.234#cloudflare-92.79ms
-172.64.146.201#cloudflare-93.22ms
-104.25.247.235#cloudflare-94.80ms
-104.25.250.163#cloudflare-95.09ms
-104.25.244.94#cloudflare-95.45ms
-172.64.153.175#cloudflare-95.49ms
-104.25.249.147#cloudflare-95.59ms
-104.25.246.232#cloudflare-95.75ms
-104.25.248.111#cloudflare-95.89ms
-104.25.255.187#cloudflare-95.95ms
-104.25.240.141#cloudflare-96.07ms
-104.25.245.43#cloudflare-96.53ms
-104.17.139.173#cloudflare-97.45ms
-104.25.254.214#cloudflare-98.35ms
-104.17.140.220#cloudflare-98.52ms
-104.25.253.20#cloudflare-102.26ms
-104.17.136.164#cloudflare-123.43ms
-104.17.130.248#cloudflare-138.60ms
-104.17.138.93#cloudflare-139.53ms
-104.17.132.121#cloudflare-140.80ms
-104.17.141.100#cloudflare-140.84ms
-104.17.133.28#cloudflare-141.43ms
-104.17.134.12#cloudflare-150.21ms
-104.17.135.232#cloudflare-151.01ms
-104.17.137.69#cloudflare-152.53ms
-104.17.142.183#cloudflare-153.25ms
-104.17.131.129#cloudflare-154.39ms
-104.17.143.151#cloudflare-157.92ms
-108.162.198.185#cloudflare-160.32ms
-104.17.152.135#cloudflare-167.86ms
-104.21.81.242#cloudflare-168.80ms
-104.17.146.108#cloudflare-173.94ms
-172.65.191.195#cloudflare-174.30ms
-172.65.254.46#cloudflare-174.37ms
-172.67.206.71#cloudflare-175.60ms
-104.17.49.147#cloudflare-176.66ms
-172.67.202.27#cloudflare-176.98ms
-172.67.142.203#cloudflare-177.00ms
-172.67.196.163#cloudflare-177.07ms
-172.67.203.205#cloudflare-177.34ms
-172.64.79.182#cloudflare-177.46ms
-172.65.217.65#cloudflare-177.54ms
-172.65.220.104#cloudflare-177.64ms
-172.65.180.168#cloudflare-177.91ms
-172.67.199.232#cloudflare-178.16ms
-172.65.177.106#cloudflare-178.26ms
-172.67.140.161#cloudflare-178.44ms
-172.65.214.206#cloudflare-178.63ms
-172.65.190.13#cloudflare-178.83ms
-172.67.200.167#cloudflare-179.09ms
-172.67.128.123#cloudflare-179.10ms
-172.65.244.225#cloudflare-179.22ms
-172.67.201.162#cloudflare-179.25ms
-172.65.184.124#cloudflare-179.53ms
-172.65.185.206#cloudflare-179.64ms
-172.65.178.198#cloudflare-179.68ms
-172.67.138.61#cloudflare-179.94ms
-172.67.133.174#cloudflare-180.10ms
-104.18.34.225#cloudflare-180.40ms
-104.29.125.94#cloudflare-180.40ms
-172.65.216.22#cloudflare-180.64ms
-172.65.215.13#cloudflare-180.65ms
-172.67.129.36#cloudflare-180.65ms
-172.65.176.249#cloudflare-180.68ms
-172.67.198.10#cloudflare-180.73ms
-172.65.219.91#cloudflare-180.84ms
-172.65.188.26#cloudflare-180.87ms
-172.67.204.22#cloudflare-180.90ms
-172.67.141.41#cloudflare-181.03ms
-172.66.3.72#cloudflare-181.23ms
-172.67.139.77#cloudflare-181.53ms
-162.159.152.110#cloudflare-181.63ms
-104.20.56.240#cloudflare-181.64ms
-172.65.223.38#cloudflare-181.71ms
-172.65.179.219#cloudflare-181.79ms
-172.67.136.40#cloudflare-181.79ms
-172.65.181.199#cloudflare-181.82ms
-172.65.218.57#cloudflare-181.85ms
-172.65.222.1#cloudflare-181.90ms
-104.20.54.56#cloudflare-181.95ms
-172.67.137.107#cloudflare-182.01ms
-172.67.197.209#cloudflare-182.01ms
-172.67.205.195#cloudflare-182.05ms
-172.65.189.196#cloudflare-182.07ms
-172.65.186.144#cloudflare-182.25ms
-172.65.210.225#cloudflare-182.26ms
-172.67.193.196#cloudflare-182.27ms
-104.21.38.175#cloudflare-182.32ms
-172.66.0.122#cloudflare-182.66ms
-104.29.124.20#cloudflare-182.79ms
-172.65.209.171#cloudflare-182.86ms
-104.18.19.198#cloudflare-182.90ms
-172.67.131.12#cloudflare-182.91ms
-172.67.207.119#cloudflare-182.95ms
-172.65.221.146#cloudflare-183.19ms
+104.16.38.32#cf-161.05ms
+104.20.56.162#cf-181.77ms
+172.65.114.192#cf-190.58ms
+172.67.225.164#cf-192.95ms
+104.25.132.53#cf-194.14ms
+172.66.148.178#cf-194.98ms
+104.24.62.153#cf-195.20ms
+104.17.222.240#cf-195.48ms
+104.27.108.214#cf-195.72ms
+172.65.64.154#cf-196.44ms
