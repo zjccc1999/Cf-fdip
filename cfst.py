@@ -4,6 +4,7 @@
 iStoreOS/N1 Cloudflare 测速脚本 - 最终版（仅IPv4）
 - 默认（仅延迟）：保留前10条，格式 IP#cf-延迟ms
 - --full-speed（完整测速）：每个优先地区最多10条，未识别地区丢弃，格式 IP#地区码-速度MB/s
+- best_ip.txt 只输出纯 IP 列表，无任何注释头
 修改 cfst 参数：直接编辑 __init__ 中的 self.default_args（最前面）
 """
 import os
@@ -32,20 +33,20 @@ class CloudflareSpeedTestIStoreOS:
         # ================================================
         # ★ cfst 参数设置区 - 用户可直接在这里修改 ★
         # 参数说明（参考 cfst 官方文档）：
-        # -n   测试数量（建议 50~300，太大测太久）
-        # -t   测速线程数（建议 2~4，iStoreOS 资源有限别太大）
-        # -dn  下载测试数量（完整测速时建议 10~20）
-        # -dt  下载测速时间；单个 IP 下载测速最长时间，不能太短
-        # -sl  下载速度下限（MB/s），低于这个不保留
-        # -tl  延迟上限（ms），高于这个不保留
-        # -p   终端显示数量
-        # -o   输出文件（固定 result.csv，不要改）
+        # -n 测试数量（建议 50~300，太大测太久）
+        # -t 测速线程数（建议 2~4，iStoreOS 资源有限别太大）
+        # -dn 下载测试数量（完整测速时建议 5~10）
+        # -dt 下载测速时间；单个 IP 下载测速最长时间，不能太短
+        # -sl 下载速度下限（MB/s），低于这个不保留
+        # -tl 延迟上限（ms），高于这个不保留
+        # -p 终端显示数量（0=不显示）
+        # -o 输出文件（固定 result.csv，不要改）
         # ================================================
         self.default_args = [
             "-n",  "100",     # 测试数量
             "-t",  "3",       # 线程数
             "-dn", "10",      # 下载测试数量（完整模式才生效）
-            "-dt", "5",       # 下载测速时间
+            "-dt", "5",       # 下载超时
             "-sl", "20",      # 速度下限 MB/s
             "-tl", "400",     # 延迟上限 ms
             "-p",  "0",       # 终端显示数量
@@ -381,19 +382,11 @@ class CloudflareSpeedTestIStoreOS:
 
         output_path = self.base_dir / "best_ip.txt"
         with open(output_path, "w", encoding="utf-8") as f:
-            f.write(f"# Cloudflare 测速结果 - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-            f.write(f"# 模式: {'完整测速（带速度）' if self.full_speed else '仅延迟测试'}\n")
-            f.write(f"# 测速参数: {self.config['cfst_args']}\n")
-            f.write(f"# 共 {len(ips)} 条\n")
-            if self.full_speed:
-                f.write("# 格式: IP#地区码-速度MB/s\n")
-            else:
-                f.write("# 格式: IP#cf-延迟ms\n")
-            f.write("# ===============================================\n\n")
+            # 只写入纯 IP 列表，不加任何注释头
             for ip_line in ips:
                 f.write(ip_line + "\n")
 
-        print(Fore.GREEN + f"✅ 已生成 best_ip.txt（共 {len(ips)} 条）")
+        print(Fore.GREEN + f"✅ 已生成 best_ip.txt（共 {len(ips)} 条纯 IP 列表，无注释）")
         return True
 
     def upload_to_github(self) -> bool:
@@ -468,9 +461,9 @@ class CloudflareSpeedTestIStoreOS:
         cfst_bin = self.prepare_cfst_binary()
         if not cfst_bin: return False
 
-        cmd_args = self.default_args.copy()  # 使用用户可修改的参数
+        cmd_args = self.default_args.copy()
         if not self.full_speed:
-            cmd_args.append("-dd")           # 仅延迟模式加 -dd
+            cmd_args.append("-dd")
         self.config['cfst_args'] = " ".join(cmd_args)
 
         print(Fore.BLUE + "\n当前测速参数：")
@@ -501,7 +494,7 @@ class CloudflareSpeedTestIStoreOS:
             if self.config.get('GH_REPO'):
                 link = f"https://raw.githubusercontent.com/{self.config['GH_REPO']}/refs/heads/main/best_ip.txt"
                 msg += f"📂 GitHub: https://github.com/{self.config['GH_REPO']}\n"
-                msg += f"📄 查看结果: <a href=\"{link}\">best_ip.txt</a>\n"
+                msg += f"📄 直接查看/复制最优IP: <a href=\"{link}\">best_ip.txt (raw)</a>\n"
             msg += "✅ 已上传 GitHub" if upload_ok else "⚠️ GitHub 上传失败"
 
             self.send_telegram_notification(msg)
@@ -515,11 +508,11 @@ class CloudflareSpeedTestIStoreOS:
         print(Fore.GREEN + "🎉 任务完成！")
         print(f"总耗时: {int(elapsed//60)}分 {int(elapsed%60)}秒")
         print(f"模式: {'完整测速' if self.full_speed else '仅延迟测试（默认）'}")
-        print(f"最佳IP文件: {self.base_dir / 'best_ip.txt'}")
+        print(f"最佳IP文件: {self.base_dir / 'best_ip.txt'} （纯 IP 列表，无注释）")
         best_path = self.base_dir / "best_ip.txt"
         if best_path.exists():
             with open(best_path) as f:
-                ips = [line.strip() for line in f if line.strip() and not line.startswith('#')]
+                ips = [line.strip() for line in f if line.strip()]
                 print(f"最优IP数量: {len(ips)}")
                 if ips:
                     print("\n前5个最优IP:")
